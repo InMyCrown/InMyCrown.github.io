@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1A2B44">
+  <meta name="author" content="zhanghao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java学习笔记7面向对象类和对象创建Student类的对象进行使用 创建对象的格式类名 对象名 &#x3D; new 类名();  使用对象成员变量的格式对象名.成员变量;  使用对象成员方法的格式对象名.成员方法();    细节: 1.打印对象名, 可以看到对象的内存地址 com.njucm.Student@4eec7777全类名 : 包名 + 类名 2.成员变量就算没有赋值, 也可以直接用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA学习笔记07">
+<meta property="og:url" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/index.html">
+<meta property="og:site_name" content="InMyCrown的博客">
+<meta property="og:description" content="Java学习笔记7面向对象类和对象创建Student类的对象进行使用 创建对象的格式类名 对象名 &#x3D; new 类名();  使用对象成员变量的格式对象名.成员变量;  使用对象成员方法的格式对象名.成员方法();    细节: 1.打印对象名, 可以看到对象的内存地址 com.njucm.Student@4eec7777全类名 : 包名 + 类名 2.成员变量就算没有赋值, 也可以直接用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
+<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png">
+<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png">
+<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png">
+<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2023-02-05T08:45:29.000Z">
+<meta property="article:modified_time" content="2023-02-05T08:48:14.470Z">
+<meta property="article:author" content="zhanghao">
+<meta property="article:tag" content="JAVA 对象">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
+  
+  
+  
+  <title>JAVA学习笔记07 - InMyCrown的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","app_key":"V2r5I2Th3xEnM5TBRcIomfhi","server_url":"https://vujb9ter.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>InMyCrown</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JAVA学习笔记07"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-05 16:45" pubdate>
+          2023年2月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          48 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JAVA学习笔记07</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Java学习笔记7"><a href="#Java学习笔记7" class="headerlink" title="Java学习笔记7"></a>Java学习笔记7</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h3 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h3><h3 id="创建Student类的对象进行使用"><a href="#创建Student类的对象进行使用" class="headerlink" title="创建Student类的对象进行使用"></a>创建Student类的对象进行使用</h3><ol>
+<li><p>创建对象的格式<br>类名 对象名 &#x3D; new 类名();</p>
+</li>
+<li><p>使用对象成员变量的格式<br>对象名.成员变量;</p>
+</li>
+<li><p>使用对象成员方法的格式<br>对象名.成员方法();</p>
+</li>
+</ol>
+<hr>
+<p>细节:</p>
+<p>1.打印对象名, 可以看到对象的内存地址</p>
+<p>com.njucm.Student@4eec7777<br>全类名 : 包名 + 类名</p>
+<p>2.成员变量就算没有赋值, 也可以直接用, 使用的是对象的默认值</p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>Java当中要想创建对象, 必须现有类的存在</p>
+<p>类 : 一组相关属性和行为的集合, 将其看做为是对象的设计图.<br>对象 : 是根据设计图(类), 创建出来的实体</p>
+<h4 id="类和对象的关系"><a href="#类和对象的关系" class="headerlink" title="类和对象的关系:"></a>类和对象的关系:</h4><pre><code class="hljs">依赖关系: 需要根据类, 创建对象
+量关系: 根据一个类, 可以创建出多个对象
+</code></pre>
+<p>类的组成:</p>
+<p>​        类的本质 : 就是对事物进行的描述</p>
+<p>​        属性(大多为名词): 在代码中使用成员变量表示, 成员变量跟之前定义变量的格式一样, 只不过位置发生了改变, 类中方法外.</p>
+<p>​        行为(大多为动词): 在代码中使用成员方法表示, 成员方法跟之前定义方法的格式一样, 只不过需要去掉 static 关键字</p>
+<h3 id="对象内存图"><a href="#对象内存图" class="headerlink" title="对象内存图"></a>对象内存图</h3><p><em>具体动画查看对应文件夹下“内存动画.pptx”文件。</em></p>
+<h5 id="单个对象内存图"><a href="#单个对象内存图" class="headerlink" title="单个对象内存图"></a>单个对象内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h5 id="两个对象内存图"><a href="#两个对象内存图" class="headerlink" title="两个对象内存图"></a>两个对象内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h5 id="两个引用指向相同内存图"><a href="#两个引用指向相同内存图" class="headerlink" title="两个引用指向相同内存图"></a>两个引用指向相同内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<p><strong>JAVA里的垃圾自动清理，堆中不用的会一定时间内被自动清理，不需要delete</strong></p>
+<h3 id="成员变量和局部变量的区别"><a href="#成员变量和局部变量的区别" class="headerlink" title="成员变量和局部变量的区别"></a>成员变量和局部变量的区别</h3> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png" srcset="/img/loading.gif" lazyload class="">
+
+
+
+<h3 id="This关键字"><a href="#This关键字" class="headerlink" title="This关键字"></a>This关键字</h3><p><strong>成员变量和局部变量重名的情况, Java使用的是就近原则</strong></p>
+<p>问题: 非要使用成员变量, 怎么办?<br>解决: 使用this关键字进行区分</p>
+<p>this可以区分局部变量和成员变量的重名问题</p>
+<h5 id="this关键字的作用"><a href="#this关键字的作用" class="headerlink" title="this关键字的作用:"></a>this关键字的作用:</h5><p>​        this可以调用本类成员 (变量, 方法)</p>
+<p>​            this.本类成员变量<br>​            this.本类成员方法();</p>
+<p>​        this.的省略规则 :</p>
+<p>​            本类成员方法 : 没有前提条件, this.可以直接省略<br>​            本类成员变量 : 方法中没有出现重名的变量, this.才可以省略</p>
+<hr>
+<h5 id="this-代表当前类对象的引用-地址"><a href="#this-代表当前类对象的引用-地址" class="headerlink" title="this : 代表当前类对象的引用(地址)"></a>this : 代表当前类对象的引用(地址)</h5><ul>
+<li><p>谁调用就代表谁.</p>
+<p>方法中的this, 代表的就是哪一个对象.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go">Student stu1 = <span class="hljs-built_in">new</span> Student();<br>System.out.<span class="hljs-built_in">println</span>(stu1);<br>Student stu2 = <span class="hljs-built_in">new</span> Student();<br>System.out.<span class="hljs-built_in">println</span>(stu2);<br>stu1.<span class="hljs-built_in">print</span>()  <span class="hljs-comment">// ----&gt; this ---&gt; stu1的地址</span><br>stu2.<span class="hljs-built_in">print</span>()  <span class="hljs-comment">// ----&gt; this ---&gt; stu2的地址</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>​                </p>
+<h3 id="构造方法-构造器"><a href="#构造方法-构造器" class="headerlink" title="构造方法(构造器)"></a>构造方法(构造器)</h3><p>初始化一个新建的对象<br>构建、创造对象的时候，所调用的方法</p>
+<h5 id="格式："><a href="#格式：" class="headerlink" title="格式："></a>格式：</h5><p>1.方法名与类名相同，大小写也要一致<br>2.没有返回值类型，连void都没有<br>3.没有具体的返回值（不能由return带回结果数据）</p>
+<h5 id="构造方法的作用"><a href="#构造方法的作用" class="headerlink" title="构造方法的作用 :"></a>构造方法的作用 :</h5><pre><code class="hljs">       1. 本质的作用 : 创建对象
+       2. 结合执行时机 : 可以创建对象的时候, 给对象中的数据初始化
+</code></pre>
+<h5 id="构造方法的注意事项"><a href="#构造方法的注意事项" class="headerlink" title="构造方法的注意事项 :"></a>构造方法的注意事项 :</h5><pre><code class="hljs">       1. 一个类中, 没有编写构造方法, 系统将会提供一个 **[默认的] [无参数]** 的构造方法
+       2. 一个类中, 如果手动编写了构造方法, 系统将不会再提供那个默认的无参构造了
+       3. 构造方法不允许手动调用
+          * *建议 : 编写类的时候, 无参构造, 带参构造, 全部手动给出*
+</code></pre>
+<p><strong>执行完构造方法里的语句后再将地址赋值回来。</strong></p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">Student stu</span> = new Student(<span class="hljs-string">&quot;你好&quot;</span>,123);<br></code></pre></td></tr></table></figure>
+
+<p>new在堆内存形成一个地址存放默认数据，栈内存中调用Student的有参构造方法，执行赋值语句，使堆内存中参数值改为你好，123； 最后将堆内存地址值传回来给stu。</p>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>使用类设计对象时将需要处理的数据以及处理这些数据的方法, 设计到对象中</p>
+<p><strong>封装的设计规范 : 合理隐藏, 合理暴露</strong></p>
+<ul>
+<li>更好的维护数据</li>
+<li>使用者无需关心内部实现, 只要知道如何使用即可</li>
+</ul>
+<h5 id="权限修饰符"><a href="#权限修饰符" class="headerlink" title="权限修饰符 :"></a>权限修饰符 :</h5><p>​            private : 同一个类中<br>​            (default) : 同一个类中, 同一个包中<br>​            protected : 同一个类中, 同一个包中, 不同包的子类<br>​            public : 任意位置访问</p>
+<h3 id="标准JavaBean"><a href="#标准JavaBean" class="headerlink" title="标准JavaBean"></a>标准JavaBean</h3><ul>
+<li>这个类中的成员变量都要私有，并且要对外提供相应的getXxx ，setXxx方法</li>
+<li>类中提供无参, 带参构造方法。</li>
+</ul>
+<h5 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h5><p>只负责数据存取，而对数据的处理交给其他类来完成，以实现数据和数据业务处理相分离。</p>
+<p><strong>安装插件JSP：直接获取构造方法，getXxx ，setXxx方法。</strong></p>
+<h3 id="电影信息系统"><a href="#电影信息系统" class="headerlink" title="电影信息系统"></a>电影信息系统</h3><p>需求</p>
+<ul>
+<li>展示系统中的全部电影(每部电影展示：名称、评分)</li>
+<li>允许用户根据电影编号（id）查询出某个电影的详细信息</li>
+</ul>
+ <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>代码：</p>
+<p>Moive</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Movie</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> id;<br>    <span class="hljs-keyword">private</span> String title;<br>    <span class="hljs-keyword">private</span> String time;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> score;<br>    <span class="hljs-keyword">private</span> String area;<br>    <span class="hljs-keyword">private</span> String type;<br>    <span class="hljs-keyword">private</span> String director;<br>    <span class="hljs-keyword">private</span> String starring;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Movie</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Movie</span><span class="hljs-params">(<span class="hljs-type">int</span> id, String title, String time, <span class="hljs-type">double</span> score, String area, String type, String director, String starring)</span> &#123;<br>        <span class="hljs-built_in">this</span>.id = id;<br>        <span class="hljs-built_in">this</span>.title = title;<br>        <span class="hljs-built_in">this</span>.time = time;<br>        <span class="hljs-built_in">this</span>.score = score;<br>        <span class="hljs-built_in">this</span>.area = area;<br>        <span class="hljs-built_in">this</span>.type = type;<br>        <span class="hljs-built_in">this</span>.director = director;<br>        <span class="hljs-built_in">this</span>.starring = starring;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getId</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> id;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setId</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>        <span class="hljs-built_in">this</span>.id = id;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getTitle</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> title;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setTitle</span><span class="hljs-params">(String title)</span> &#123;<br>        <span class="hljs-built_in">this</span>.title = title;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getTime</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> time;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setTime</span><span class="hljs-params">(String time)</span> &#123;<br>        <span class="hljs-built_in">this</span>.time = time;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">getScore</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> score;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setScore</span><span class="hljs-params">(<span class="hljs-type">double</span> score)</span> &#123;<br>        <span class="hljs-built_in">this</span>.score = score;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getArea</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> area;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setArea</span><span class="hljs-params">(String area)</span> &#123;<br>        <span class="hljs-built_in">this</span>.area = area;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getType</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> type;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setType</span><span class="hljs-params">(String type)</span> &#123;<br>        <span class="hljs-built_in">this</span>.type = type;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getDirector</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> director;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setDirector</span><span class="hljs-params">(String director)</span> &#123;<br>        <span class="hljs-built_in">this</span>.director = director;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getStarring</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> starring;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setStarring</span><span class="hljs-params">(String starring)</span> &#123;<br>        <span class="hljs-built_in">this</span>.starring = starring;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>MovieService</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.Scanner;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MovieService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Movie[] movies;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Scanner</span> <span class="hljs-variable">sc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(System.in);<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MovieService</span><span class="hljs-params">(Movie[] movies)</span> &#123;<br>        <span class="hljs-built_in">this</span>.movies = movies;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 启动电影信息管理系统</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">()</span> &#123;<br><br>        lo:<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            System.out.println(<span class="hljs-string">&quot;----------电影信息系统----------&quot;</span>);<br>            System.out.println(<span class="hljs-string">&quot;请输入您的选择:&quot;</span>);<br>            System.out.println(<span class="hljs-string">&quot;1. 查询全部电影信息&quot;</span>);<br>            System.out.println(<span class="hljs-string">&quot;2. 根据id查询电影信息&quot;</span>);<br>            System.out.println(<span class="hljs-string">&quot;3. 退出&quot;</span>);<br><br>            <span class="hljs-type">int</span> <span class="hljs-variable">choice</span> <span class="hljs-operator">=</span> sc.nextInt();<br><br>            <span class="hljs-keyword">switch</span> (choice) &#123;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>                    queryMovieInfos();<br>                    <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                    queryMovieInfoById();<br>                    <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<br>                    System.out.println(<span class="hljs-string">&quot;感谢您的使用, 再见!&quot;</span>);<br>                    <span class="hljs-keyword">break</span> lo;<br>                <span class="hljs-keyword">default</span>:<br>                    System.out.println(<span class="hljs-string">&quot;您的输入有误, 请检查&quot;</span>);<br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此方法根据电影编号, 查询电影详情信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">queryMovieInfoById</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 1. 键盘录入用户输入的编号</span><br>        System.out.println(<span class="hljs-string">&quot;请输入您要查询的电影编号:&quot;</span>);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> sc.nextInt();<br>        <span class="hljs-comment">// 2. 遍历数组, 从数组中查询电影信息</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; movies.length; i++) &#123;<br>            <span class="hljs-type">Movie</span> <span class="hljs-variable">movie</span> <span class="hljs-operator">=</span> movies[i];<br>            <span class="hljs-keyword">if</span>(movie.getId() == id)&#123;<br>                <span class="hljs-comment">// 3. 将找到的电影信息, 打印在控制台</span><br>                System.out.println(movie.getId() + <span class="hljs-string">&quot;---&quot;</span> + movie.getTitle() + <span class="hljs-string">&quot;---&quot;</span> + movie.getTime()<br>                        + <span class="hljs-string">&quot;---&quot;</span> + movie.getScore() + <span class="hljs-string">&quot;---&quot;</span> + movie.getArea() + <span class="hljs-string">&quot;---&quot;</span><br>                        + movie.getType() + <span class="hljs-string">&quot;---&quot;</span> + movie.getDirector() + <span class="hljs-string">&quot;---&quot;</span> + movie.getStarring());<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment">// 代码要是走到这里, 说明没找到</span><br>        System.out.println(<span class="hljs-string">&quot;您输入的编号不存在, 请检查!&quot;</span>);<br><br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 展示系统中全部的电影 (名称, 评分)</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">queryMovieInfos</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 1. 遍历数组, 取出每一个电影对象</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; movies.length; i++) &#123;<br>            <span class="hljs-type">Movie</span> <span class="hljs-variable">movie</span> <span class="hljs-operator">=</span> movies[i];<br>            <span class="hljs-comment">// System.out.println(movie);   打印对象名, 会看到内存地址</span><br>            <span class="hljs-comment">// 2. 通过电影对象, 调用内部getXxx方法, 获取信息并打印</span><br>            System.out.println(movie.getTitle() + <span class="hljs-string">&quot;---&quot;</span> + movie.getScore());<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>MovieTest</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><br>        <span class="hljs-type">Movie</span> <span class="hljs-variable">movie1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Movie</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;东八区的先生们&quot;</span>, <span class="hljs-string">&quot;2022&quot;</span>, <span class="hljs-number">2.1</span>, <span class="hljs-string">&quot;中国大陆&quot;</span>, <span class="hljs-string">&quot;剧情 喜剧&quot;</span>, <span class="hljs-string">&quot;夏睿&quot;</span>, <span class="hljs-string">&quot;张翰 王晓晨&quot;</span>);<br>        <span class="hljs-type">Movie</span> <span class="hljs-variable">movie2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Movie</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;上海堡垒&quot;</span>, <span class="hljs-string">&quot;2019&quot;</span>, <span class="hljs-number">2.9</span>, <span class="hljs-string">&quot;中国大陆&quot;</span>, <span class="hljs-string">&quot;爱情 战争 科幻&quot;</span>, <span class="hljs-string">&quot;滕华涛&quot;</span>, <span class="hljs-string">&quot;鹿晗 舒淇&quot;</span>);<br>        <span class="hljs-type">Movie</span> <span class="hljs-variable">movie3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Movie</span>(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;纯洁心灵·逐梦演艺圈&quot;</span>, <span class="hljs-string">&quot;2015&quot;</span>, <span class="hljs-number">2.2</span>, <span class="hljs-string">&quot;中国大陆&quot;</span>, <span class="hljs-string">&quot;剧情 喜剧&quot;</span>, <span class="hljs-string">&quot;毕志飞&quot;</span>, <span class="hljs-string">&quot;朱一文 李彦漫&quot;</span>);<br><br>        Movie[] movies = &#123;movie1, movie2, movie3&#125;;<br><br>        <span class="hljs-comment">// 该如何将一个类中的数据, 传递给另外一个类</span><br>        <span class="hljs-type">MovieService</span> <span class="hljs-variable">movieService</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MovieService</span>(movies);<br>        movieService.start();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JAVA-%E5%AF%B9%E8%B1%A1/">#JAVA 对象</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JAVA学习笔记07</div>
+      <div>http://example.com/2023/02/05/JAVA学习笔记07/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>zhanghao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B006/" title="JAVA学习笔记06">
+                        <span class="hidden-mobile">JAVA学习笔记06</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","appKey":"V2r5I2Th3xEnM5TBRcIomfhi","path":"window.location.pathname","placeholder":null,"avatar":"hide","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://vujb9ter.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
