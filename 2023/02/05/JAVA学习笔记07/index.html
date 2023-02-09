@@ -18,26 +18,26 @@
   
     <meta name="description" content="Java学习笔记7面向对象类和对象创建Student类的对象进行使用 创建对象的格式类名 对象名 &#x3D; new 类名();  使用对象成员变量的格式对象名.成员变量;  使用对象成员方法的格式对象名.成员方法();    细节: 1.打印对象名, 可以看到对象的内存地址 com.njucm.Student@4eec7777全类名 : 包名 + 类名 2.成员变量就算没有赋值, 也可以直接用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA学习笔记07">
-<meta property="og:url" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/index.html">
+<meta property="og:title" content="Java学习笔记07">
+<meta property="og:url" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/index.html">
 <meta property="og:site_name" content="InMyCrown的博客">
 <meta property="og:description" content="Java学习笔记7面向对象类和对象创建Student类的对象进行使用 创建对象的格式类名 对象名 &#x3D; new 类名();  使用对象成员变量的格式对象名.成员变量;  使用对象成员方法的格式对象名.成员方法();    细节: 1.打印对象名, 可以看到对象的内存地址 com.njucm.Student@4eec7777全类名 : 包名 + 类名 2.成员变量就算没有赋值, 也可以直接用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
-<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png">
-<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png">
-<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png">
-<meta property="og:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
+<meta property="og:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png">
+<meta property="og:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png">
+<meta property="og:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png">
+<meta property="og:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png">
 <meta property="article:published_time" content="2023-02-05T08:45:29.000Z">
-<meta property="article:modified_time" content="2023-02-05T08:48:14.470Z">
+<meta property="article:modified_time" content="2023-02-07T13:55:31.584Z">
 <meta property="article:author" content="zhanghao">
 <meta property="article:tag" content="JAVA 对象">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
+<meta name="twitter:image" content="http://example.com/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png">
   
   
   
-  <title>JAVA学习笔记07 - InMyCrown的博客</title>
+  <title>Java学习笔记07 - InMyCrown的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="JAVA学习笔记07"></span>
+            <span id="subtitle" data-typed-text="Java学习笔记07"></span>
           
         </div>
 
@@ -300,7 +300,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">JAVA学习笔记07</h1>
+            <h1 style="display: none">Java学习笔记07</h1>
             
             
               <div class="markdown-body">
@@ -328,16 +328,16 @@
 <p>​        属性(大多为名词): 在代码中使用成员变量表示, 成员变量跟之前定义变量的格式一样, 只不过位置发生了改变, 类中方法外.</p>
 <p>​        行为(大多为动词): 在代码中使用成员方法表示, 成员方法跟之前定义方法的格式一样, 只不过需要去掉 static 关键字</p>
 <h3 id="对象内存图"><a href="#对象内存图" class="headerlink" title="对象内存图"></a>对象内存图</h3><p><em>具体动画查看对应文件夹下“内存动画.pptx”文件。</em></p>
-<h5 id="单个对象内存图"><a href="#单个对象内存图" class="headerlink" title="单个对象内存图"></a>单个对象内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png" srcset="/img/loading.gif" lazyload class=""> 
+<h5 id="单个对象内存图"><a href="#单个对象内存图" class="headerlink" title="单个对象内存图"></a>单个对象内存图</h5> <img src="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/1.png" srcset="/img/loading.gif" lazyload class=""> 
 
-<h5 id="两个对象内存图"><a href="#两个对象内存图" class="headerlink" title="两个对象内存图"></a>两个对象内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png" srcset="/img/loading.gif" lazyload class=""> 
+<h5 id="两个对象内存图"><a href="#两个对象内存图" class="headerlink" title="两个对象内存图"></a>两个对象内存图</h5> <img src="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/2.png" srcset="/img/loading.gif" lazyload class=""> 
 
-<h5 id="两个引用指向相同内存图"><a href="#两个引用指向相同内存图" class="headerlink" title="两个引用指向相同内存图"></a>两个引用指向相同内存图</h5> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png" srcset="/img/loading.gif" lazyload class=""> 
+<h5 id="两个引用指向相同内存图"><a href="#两个引用指向相同内存图" class="headerlink" title="两个引用指向相同内存图"></a>两个引用指向相同内存图</h5> <img src="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/3.png" srcset="/img/loading.gif" lazyload class=""> 
 
 
 
 <p><strong>JAVA里的垃圾自动清理，堆中不用的会一定时间内被自动清理，不需要delete</strong></p>
-<h3 id="成员变量和局部变量的区别"><a href="#成员变量和局部变量的区别" class="headerlink" title="成员变量和局部变量的区别"></a>成员变量和局部变量的区别</h3> <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png" srcset="/img/loading.gif" lazyload class="">
+<h3 id="成员变量和局部变量的区别"><a href="#成员变量和局部变量的区别" class="headerlink" title="成员变量和局部变量的区别"></a>成员变量和局部变量的区别</h3> <img src="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%8C%BA%E5%88%AB.png" srcset="/img/loading.gif" lazyload class="">
 
 
 
@@ -387,7 +387,7 @@
 <li>展示系统中的全部电影(每部电影展示：名称、评分)</li>
 <li>允许用户根据电影编号（id）查询出某个电影的详细信息</li>
 </ul>
- <img src="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png" srcset="/img/loading.gif" lazyload class="">
+ <img src="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007/%E5%9B%BE%E7%89%871.png" srcset="/img/loading.gif" lazyload class="">
 
 <p>代码：</p>
 <p>Moive</p>
@@ -422,8 +422,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>JAVA学习笔记07</div>
-      <div>http://example.com/2023/02/05/JAVA学习笔记07/</div>
+      <div>Java学习笔记07</div>
+      <div>http://example.com/2023/02/05/Java学习笔记07/</div>
     </div>
     <div class="license-meta">
       
@@ -467,12 +467,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2023/02/06/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B008/" title="Java学习笔记08">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java学习笔记08</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/05/JAVA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B006/" title="JAVA学习笔记06">
-                        <span class="hidden-mobile">JAVA学习笔记06</span>
+                      <a href="/2023/02/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B006/" title="Java学习笔记06">
+                        <span class="hidden-mobile">Java学习笔记06</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
