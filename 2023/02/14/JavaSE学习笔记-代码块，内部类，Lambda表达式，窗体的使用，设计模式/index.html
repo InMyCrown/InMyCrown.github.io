@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1A2B44">
+  <meta name="author" content="zhanghao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="代码块，内部类，Lambda表达式，窗体的使用，设计模式代码块在Java类下，使用 { } 括起来的代码被称为代码块 分类：局部代码块  构造代码块  静态代码块  同步代码块[多态]  局部代码块  ​		位置：方法中定义​		作用：限定变量的生命周期，及早释放，提高内存利用率  构造代码块  ​		位置：类中方法外定义​		特点：每次构造方法执行的时，都会执行该代码块中的代码，并且在构造方法执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="12_代码块，内部类，Lambda表达式，窗体的使用，设计模式">
+<meta property="og:url" content="http://example.com/2023/02/14/JavaSE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BB%A3%E7%A0%81%E5%9D%97%EF%BC%8C%E5%86%85%E9%83%A8%E7%B1%BB%EF%BC%8CLambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%8C%E7%AA%97%E4%BD%93%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%8C%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="InMyCrown的博客">
+<meta property="og:description" content="代码块，内部类，Lambda表达式，窗体的使用，设计模式代码块在Java类下，使用 { } 括起来的代码被称为代码块 分类：局部代码块  构造代码块  静态代码块  同步代码块[多态]  局部代码块  ​		位置：方法中定义​		作用：限定变量的生命周期，及早释放，提高内存利用率  构造代码块  ​		位置：类中方法外定义​		特点：每次构造方法执行的时，都会执行该代码块中的代码，并且在构造方法执">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-13T16:35:41.000Z">
+<meta property="article:modified_time" content="2023-02-13T17:12:43.429Z">
+<meta property="article:author" content="zhanghao">
+<meta property="article:tag" content="JAVA SE">
+<meta property="article:tag" content="代码块">
+<meta property="article:tag" content="内部类">
+<meta property="article:tag" content="Lambda表达式">
+<meta property="article:tag" content="窗体的使用">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>12_代码块，内部类，Lambda表达式，窗体的使用，设计模式 - InMyCrown的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","app_key":"V2r5I2Th3xEnM5TBRcIomfhi","server_url":"https://vujb9ter.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>InMyCrown</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="12_代码块，内部类，Lambda表达式，窗体的使用，设计模式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-14 00:35" pubdate>
+          2023年2月14日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          61 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">12_代码块，内部类，Lambda表达式，窗体的使用，设计模式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="代码块，内部类，Lambda表达式，窗体的使用，设计模式"><a href="#代码块，内部类，Lambda表达式，窗体的使用，设计模式" class="headerlink" title="代码块，内部类，Lambda表达式，窗体的使用，设计模式"></a>代码块，内部类，Lambda表达式，窗体的使用，设计模式</h2><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>在Java类下，使用 { } 括起来的代码被称为代码块</p>
+<p>分类：局部代码块  构造代码块  静态代码块  同步代码块[多态]</p>
+<ul>
+<li>局部代码块</li>
+</ul>
+<p>​		位置：方法中定义<br>​		作用：限定变量的生命周期，及早释放，提高内存利用率</p>
+<ul>
+<li>构造代码块</li>
+</ul>
+<p>​		位置：类中方法外定义<br>​		特点：每次构造方法执行的时，都会执行该代码块中的代码，并且在构造方法执行前执行<br>​		作用：将多个构造方法中相同的代码，抽取到构造代码块中，提高代码的复用性</p>
+<ul>
+<li>静态代码块</li>
+</ul>
+<p>​		位置：类中方法外定义<br>​		特点：需要通过static关键字修饰，随着类的加载而加载，并且只执行一次<br>​		作用：在类加载的时候做一些数据初始化的操作；加载配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> &#123;<br>    <span class="hljs-keyword">static</span> String school;<br>    <span class="hljs-keyword">static</span> &#123;<br>        school = <span class="hljs-string">&quot;ABC&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h3><p>内部类:定义在一个类里面的类</p>
+<h4 id="创建对象的格式"><a href="#创建对象的格式" class="headerlink" title="创建对象的格式"></a>创建对象的格式</h4><p>外部类名.内部类名 对象名 &#x3D; new 外部类对象().new 内部类对象();</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">Outer</span>.<span class="hljs-keyword">Inner</span> <span class="hljs-keyword">in</span> = <span class="hljs-built_in">new</span> <span class="hljs-keyword">Outer</span>().<span class="hljs-built_in">new</span> <span class="hljs-keyword">Inner</span>();<br></code></pre></td></tr></table></figure>
+
+<h4 id="成员访问细节"><a href="#成员访问细节" class="headerlink" title="成员访问细节 :"></a>成员访问细节 :</h4><ul>
+<li>内部类中, 访问外部类成员 : 直接访问, 包括私有</li>
+<li>外部类中, 访问内部类成员 : 需要创建对象访问</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InnerTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        MyOuter.<span class="hljs-type">MyInner</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyOuter</span>().<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyInner</span>();<br>        a.show();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyOuter</span> &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyInner</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">20</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">()</span>&#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">30</span>;<br>            System.out.println(num);                            <span class="hljs-comment">// 30 输出内部类方法中定义的</span><br>            System.out.println(<span class="hljs-built_in">this</span>.num);                       <span class="hljs-comment">// 20 输出内部类成员变量</span><br>            System.out.println(MyOuter.<span class="hljs-built_in">this</span>.num);               <span class="hljs-comment">// 10 输出外部类成员变量，指定this是MyOuter本类的</span><br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="静态内部类-static-修饰的成员内部类"><a href="#静态内部类-static-修饰的成员内部类" class="headerlink" title="静态内部类 : static 修饰的成员内部类"></a>静态内部类 : static 修饰的成员内部类</h4><p>​    创建对象格式 : 外部类名.内部类名 对象名 &#x3D; new 外部类名.内部类对象();</p>
+<p>​    <em><strong>注意事项 : 静态只能访问静态</strong></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StaticInnerTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        Outer.InnerClass.A();                 <span class="hljs-comment">//静态可以通过类名调用</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span> &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">num1</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">num2</span> <span class="hljs-operator">=</span> <span class="hljs-number">20</span>;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InnerClass</span> &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">A</span><span class="hljs-params">()</span>&#123;<br>            <span class="hljs-type">Outer</span> <span class="hljs-variable">o</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Outer</span>();   		 <span class="hljs-comment">//非静态成员，需要先创建对象，才能调用</span><br>            System.out.println(o.num1);<br>            System.out.println(num2);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="局部内部类-放在方法、代码块、构造器等执行体中"><a href="#局部内部类-放在方法、代码块、构造器等执行体中" class="headerlink" title="局部内部类: 放在方法、代码块、构造器等执行体中"></a>局部内部类: 放在方法、代码块、构造器等执行体中</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LocalClassTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">A</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>();<br>        a.show();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123;<br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">method</span><span class="hljs-params">()</span>&#123;<br>                System.out.println(<span class="hljs-string">&quot;B&quot;</span>);<br>            &#125;<br>        &#125;<br>        <span class="hljs-type">B</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>();           <span class="hljs-comment">//要调用方法中的类，需要先在该方法中创建对象，使用内部类要用的方法，最后在主函数中通过调用外部类的该方法才能使用，很麻烦，一般不会使用</span><br>        b.method(); <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h4><p>概述 : 匿名内部类本质上是一个特殊的局部内部类（定义在方法内部）,匿名内部类可以使代码更加简洁，定义一个类的同时对其进行实例化<br>前提 : 需要存在一个接口或类<br>格式 :<br>                    new 类名\接口名 () {  }</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-keyword">new</span> 类名()&#123;&#125;  :  代表继承这个类<br><span class="hljs-keyword">new</span> 接口名()&#123;&#125; : 代表实现这个接口<br>   结论 : 可以让代码变得更加简洁, 在定义类的时候对其进行实例化<br></code></pre></td></tr></table></figure>
+
+<p><strong>问题: 方法的形参是接口类型, 我们该传入的是什么?</strong><br>                    <em><em>: —–&gt;传入的是该接口的</em><u>实现类对象</u>      要实现的方法多时，就实例化一个接口，方法少时就用匿名内部类</em>**</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AnonClass</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        useInter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InterImpl</span>());<br>        useInter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Inter</span>()&#123;                                   <span class="hljs-comment">//匿名内部类作实现类对象</span><br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">()</span> &#123;                                <span class="hljs-comment">//实现接口的方法</span><br>                System.out.println(<span class="hljs-string">&quot;匿名内部类&quot;</span>);<br>            &#125;<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">useInter</span><span class="hljs-params">(Inter i)</span>&#123;   <span class="hljs-comment">// Inter i = new InterImpl(); 要传入一个实现类对象</span><br>        i.show();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Inter</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h3><p>Lambda表达式 : JDK8开始后的一种新语法形式</p>
+<p>   <strong>作用 :</strong> 简化匿名内部类的代码写法。<br>   <strong>格式 :</strong> () -&gt; {}</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-function"><span class="hljs-params">(匿名内部类被重写方法的形参列表)</span> -&gt;</span> &#123;   被重写方法的方法体代码。&#125;<br>注：-&gt; 是语法形式，无实际含义<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：Lambda 表达式只能简化函数式接口的匿名内部类的写法形式</strong></p>
+<h5 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h5><ul>
+<li>必须是接口,接口中有且仅有一个抽象方法的形式</li>
+<li>通常会在接口上加上一个@FunctionalInterface注解，标记该接口必须是满足函数式接口。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Inter</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">cx</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-comment">//使用</span><br>useInter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Inter</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">cx</span><span class="hljs-params">()</span> &#123;<br>                System.out.println(<span class="hljs-string">&quot;cx&quot;</span>);<br>            &#125;<br>        &#125;);<br></code></pre></td></tr></table></figure>
+
+<p><em>IDEA简化成Lambda快捷键：alt+回车</em></p>
+<h4 id="Lambda表达式的省略写法"><a href="#Lambda表达式的省略写法" class="headerlink" title="Lambda表达式的省略写法"></a>Lambda表达式的省略写法</h4><ul>
+<li>参数类型可以省略不写。</li>
+<li>如果只有一个参数，参数类型可以省略，同时 () 也可以省略。</li>
+<li>如果Lambda表达式的方法体代码只有一行代码<br>可以省略大括号不写,同时要省略分号<br>此时，如果这行代码是return语句，必须省略return不写，同时也必须省略 “;” 不写</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Calculator</span> &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-title function_">calc</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span>;<br>&#125;<br><br>Calculator方法：<br><span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> calculator.calc(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>);<br>System.out.println(result);<br><br>Lambda表达实现：<br>Calculator((a, b) -&gt; a - b);<br></code></pre></td></tr></table></figure>
+
+<h4 id="匿名内部类-amp-Lambda"><a href="#匿名内部类-amp-Lambda" class="headerlink" title="匿名内部类&amp;Lambda"></a>匿名内部类&amp;Lambda</h4><ul>
+<li><h5 id="使用限制不同"><a href="#使用限制不同" class="headerlink" title="使用限制不同"></a>使用限制不同</h5></li>
+</ul>
+<p>匿名内部类 : 可以操作类, 接口<br>Lambda表达式 : 只能操作函数式接口</p>
+<ul>
+<li><h5 id="实现原理不同"><a href="#实现原理不同" class="headerlink" title="实现原理不同"></a>实现原理不同</h5></li>
+</ul>
+<p>匿名内部类：编译之后，产生一个<strong>单独的.class字节码</strong>文件<br>Lambda表达式：编译之后，没有一个单独的.class字节码文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">use(<span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>() &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">method</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;匿名内部类&quot;</span>);<br>    &#125;<br>&#125;);<br><br>use(() -&gt; &#123;<br>    System.out.println(<span class="hljs-string">&quot;Lambda&quot;</span>);<br>    &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="窗体、组件、事件"><a href="#窗体、组件、事件" class="headerlink" title="窗体、组件、事件"></a>窗体、组件、事件</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"><span class="hljs-built_in">String</span>[] args</span>) &#123;<br>    <span class="hljs-comment">// 创建窗体对象</span><br>    <span class="hljs-title class_">JFrame</span> frame = <span class="hljs-keyword">new</span> <span class="hljs-title class_">JFrame</span>();<br>    <span class="hljs-comment">// 设置窗体大小 单位：像素</span><br>    frame.<span class="hljs-title function_">setSize</span>(<span class="hljs-number">500</span>, <span class="hljs-number">800</span>);    <br>    <span class="hljs-comment">// 修改窗体的关闭模式 </span><br>  	frame.<span class="hljs-title function_">setDefaultCloseOperation</span>(<span class="hljs-title class_">WindowConstants</span>.<span class="hljs-property">EXIT_ON_CLOSE</span>);<br>    <span class="hljs-comment">// 设置窗体标题</span><br>    frame.<span class="hljs-title function_">setTitle</span>(<span class="hljs-string">&quot;窗体&quot;</span>);<br>    <span class="hljs-comment">// 设置窗体可见</span><br>    frame.<span class="hljs-title function_">setVisible</span>(<span class="hljs-literal">true</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="组件的添加"><a href="#组件的添加" class="headerlink" title="组件的添加"></a>组件的添加</h4><ol>
+<li><p>窗体对象.setLayout(null); 取消默认布局</p>
+</li>
+<li><p>创建组件对象</p>
+</li>
+<li><p>组件对象.setBounds(x,y,width,height); 设置摆放位置</p>
+</li>
+<li><p>窗体对象.getContentPane().add(组件对象);</p>
+<p><strong>如果相同位置，先来的会显示，优先级高，后设置的被覆盖；</strong></p>
+<h5 id="窗体中添加按钮组件"><a href="#窗体中添加按钮组件" class="headerlink" title="窗体中添加按钮组件"></a>窗体中添加按钮组件</h5></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java">JButton构造方法 :<br>      <span class="hljs-number">1.</span> <span class="hljs-keyword">public</span> <span class="hljs-title function_">JButton</span><span class="hljs-params">()</span> : 创建一个空白的按钮<br>      <span class="hljs-number">2.</span> <span class="hljs-keyword">public</span> <span class="hljs-title function_">JButton</span><span class="hljs-params">(String text)</span> : 创建一个带文本的按钮<br> 注: 如果取消窗体的默认布局, 需要手动指定组件的摆放位置<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    <span class="hljs-type">JFrame</span> <span class="hljs-variable">frame</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JFrame</span>();<br>    frame.setSize(<span class="hljs-number">500</span>,<span class="hljs-number">500</span>);<br>   	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);<br>    frame.setLayout(<span class="hljs-literal">null</span>);              			<span class="hljs-comment">// 取消窗体默认布局</span><br>     <br>    <span class="hljs-type">JButton</span> <span class="hljs-variable">btn</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JButton</span>(<span class="hljs-string">&quot;Hello World&quot;</span>);		<span class="hljs-comment">// 1. 创建按钮对象</span><br>    btn.setBounds(<span class="hljs-number">60</span>,<span class="hljs-number">60</span>,<span class="hljs-number">100</span>,<span class="hljs-number">100</span>);  			        <span class="hljs-comment">//    设置按钮位置 大小</span><br><br>    frame.getContentPane().add(btn);				<span class="hljs-comment">// 2. 将按钮添加到窗体的面板对象中</span><br>    frame.setVisible(<span class="hljs-literal">true</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用JLabel展示文本和图片"><a href="#使用JLabel展示文本和图片" class="headerlink" title="使用JLabel展示文本和图片"></a>使用JLabel展示文本和图片</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"> JLabel构造方法 :<br>        JLabel(String text) 使用指定的文本创建一个 JLabel 对象<br>        JLabel(Icon image) 创建一个具有指定图像的 JLabel 对象<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    <span class="hljs-type">JFrame</span> <span class="hljs-variable">frame</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JFrame</span>();<br>    frame.setSize(<span class="hljs-number">500</span>,<span class="hljs-number">500</span>);<br>    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);<br>    frame.setLayout(<span class="hljs-literal">null</span>);<br><br>    <span class="hljs-type">JLabel</span> <span class="hljs-variable">jl</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JLabel</span>(<span class="hljs-string">&quot;你好&quot;</span>); 										  <span class="hljs-comment">// JLabel展示文本</span><br>    jl.setBounds(<span class="hljs-number">50</span>,<span class="hljs-number">50</span>,<span class="hljs-number">100</span>,<span class="hljs-number">100</span>);<br>    frame.getContentPane().add(jl);<br>    <br>    <span class="hljs-type">JLabel</span> <span class="hljs-variable">imgLabel</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JLabel</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ImageIcon</span>(<span class="hljs-string">&quot;&lt;图片位置&gt;&quot;</span>));  			 <span class="hljs-comment">// JLabel展示图片</span><br>    imgLabel.setBounds(<span class="hljs-number">50</span>, <span class="hljs-number">150</span>, <span class="hljs-number">100</span>,<span class="hljs-number">100</span>);<br>    frame.getContentPane().add(imgLabel);<br><br>    frame.setVisible(<span class="hljs-literal">true</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="监听器的使用"><a href="#监听器的使用" class="headerlink" title="监听器的使用"></a>监听器的使用</h4><h5 id="动作事件-ActionListener"><a href="#动作事件-ActionListener" class="headerlink" title="动作事件 : ActionListener"></a>动作事件 : ActionListener</h5><ul>
+<li><p>鼠标点击  </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">JButton btn = <span class="hljs-keyword">new</span> <span class="hljs-constructor">JButton(<span class="hljs-string">&quot;按钮&quot;</span>)</span>; 	 <span class="hljs-comment">//按钮点击事件</span><br>btn.set<span class="hljs-constructor">Bounds(0,0,100,100)</span>;<br>frame.get<span class="hljs-constructor">ContentPane()</span>.add(btn);<br><br>btn.add<span class="hljs-constructor">ActionListener(<span class="hljs-params">new</span> ActionListener()</span> &#123;<br>    @Override<br>    public void action<span class="hljs-constructor">Performed(ActionEvent <span class="hljs-params">e</span>)</span> &#123;<br>        <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>out.println(<span class="hljs-string">&quot;按钮被点击了&quot;</span>);<br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>空格按键</p>
+<p><em>通过打印e.getKeyCode()的值，快速获取需要的按键代码数值</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java">frame.addKeyListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">KeyListener</span>() &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">keyTyped</span><span class="hljs-params">(KeyEvent e)</span> &#123;<br>        <span class="hljs-comment">//无法监听：fn，ctrl，esc，上下左右  很少用</span><br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">keyPressed</span><span class="hljs-params">(KeyEvent e)</span> &#123; <span class="hljs-comment">//点击事件</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">keyCode</span> <span class="hljs-operator">=</span> e.getKeyCode();<br>        <span class="hljs-keyword">if</span>(keyCode == <span class="hljs-number">37</span>) &#123;<br>            System.out.println(<span class="hljs-string">&quot;左&quot;</span>);<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(keyCode == <span class="hljs-number">38</span>)&#123;<br>            System.out.println(<span class="hljs-string">&quot;上&quot;</span>);<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(keyCode == <span class="hljs-number">39</span>)&#123;<br>            System.out.println(<span class="hljs-string">&quot;右&quot;</span>);<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(keyCode == <span class="hljs-number">40</span>)&#123;<br>            System.out.println(<span class="hljs-string">&quot;下&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//适配器模式</span><br>frame.addKeyListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">KeyAdapter</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">keyPressed</span><span class="hljs-params">(KeyEvent e)</span> &#123;<br>                System.out.println(<span class="hljs-string">&quot;键盘&quot;</span>);<br>            &#125;   <span class="hljs-comment">//只需要重写这一个方法</span><br>        &#125;);<br><br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">keyReleased</span><span class="hljs-params">(KeyEvent e)</span> &#123; <span class="hljs-comment">//松开事件</span><br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="焦点-程序的注意力集中在了某一个组件上"><a href="#焦点-程序的注意力集中在了某一个组件上" class="headerlink" title="焦点: 程序的注意力集中在了某一个组件上"></a>焦点: 程序的注意力集中在了某一个组件上</h5><p>注: 按钮组件比较特殊, 在创建好之后, 程序的焦点, 默认就在按钮组件上</p>
+<p>​		<strong>但按钮组件, 其实不需要占用程序的焦点，通过setFocusable(false); 取消焦点；</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">btn.set<span class="hljs-constructor">Focusable(<span class="hljs-params">false</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p><em>否则：监听点击按钮事件和键盘点击事件同时设置后，焦点在按钮上，操作键盘会显示按钮事件发生，自己的键盘事件无法使用。</em></p>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><p><strong>设计模式（Design pattern）：</strong>一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。<br> <strong>目的：</strong>使用设计模式是为了可重用代码、让代码更容易被他人理解、保证代码可靠性、程序的重用性。</p>
+<h4 id="适配器设计模式：解决接口与接口实现类之间的矛盾问题"><a href="#适配器设计模式：解决接口与接口实现类之间的矛盾问题" class="headerlink" title="适配器设计模式：解决接口与接口实现类之间的矛盾问题"></a>适配器设计模式：解决接口与接口实现类之间的矛盾问题</h4><h5 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h5><ol>
+<li>编写一个 xxxAdapter 类,  实现对应接口</li>
+<li>重写内部所有抽象方法,  但方法都是空实现</li>
+<li>让自己的类去继承适配器类, 重写自己需要的方法即可</li>
+<li>为了避免其他类创建适配器类的对象,  使用 abstract 进行修饰</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Inter</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">A</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">B</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">C</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">A_Adapter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Inter</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">A</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">B</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">C</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">NeedC</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">A_Adapter</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">C</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;只需要重写所需的这个方法&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="模板设计模式：把抽象类整体看做成一个模板，模板中不能决定的东西定义成抽象方法"><a href="#模板设计模式：把抽象类整体看做成一个模板，模板中不能决定的东西定义成抽象方法" class="headerlink" title="模板设计模式：把抽象类整体看做成一个模板，模板中不能决定的东西定义成抽象方法"></a>模板设计模式：把抽象类整体看做成一个模板，模板中不能决定的东西定义成抽象方法</h4><p><strong>让使用模板的类（继承抽象类的类）去重写抽象方法实现需求</strong> </p>
+<p><strong>目的：</strong>模板设计模式的优势，模板已经定义了通用结构，使用者只需要关心自己需要实现的功能即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Template</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">write</span><span class="hljs-params">()</span> &#123;    <span class="hljs-comment">//final修饰，防止子类修改</span><br>        System.out.println(<span class="hljs-string">&quot;模板头部固定代码&quot;</span>);<br>        body();<br>        System.out.println(<span class="hljs-string">&quot;模板尾部固定代码&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">body</span><span class="hljs-params">()</span>;   <span class="hljs-comment">//中间设置为抽象方法，供子类实现</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Happy</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Template</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">body</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;模板中要实现的代码&quot;</span>);<br>    &#125;<br>&#125;<br><br>使用：<br>    <span class="hljs-type">Happy</span> <span class="hljs-variable">happy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Happy</span>();<br>    happy.write();<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JAVA/" class="category-chain-item">JAVA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JAVA/JAVA-SE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="category-chain-item">JAVA SE学习记录</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JAVA-SE/">#JAVA SE</a>
+      
+        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%9D%97/">#代码块</a>
+      
+        <a href="/tags/%E5%86%85%E9%83%A8%E7%B1%BB/">#内部类</a>
+      
+        <a href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">#Lambda表达式</a>
+      
+        <a href="/tags/%E7%AA%97%E4%BD%93%E7%9A%84%E4%BD%BF%E7%94%A8/">#窗体的使用</a>
+      
+        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">#设计模式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>12_代码块，内部类，Lambda表达式，窗体的使用，设计模式</div>
+      <div>http://example.com/2023/02/14/JavaSE学习笔记-代码块，内部类，Lambda表达式，窗体的使用，设计模式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>zhanghao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/13/%E6%B3%A8%E8%A7%A3/" title="注解">
+                        <span class="hidden-mobile">注解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","appKey":"V2r5I2Th3xEnM5TBRcIomfhi","path":"window.location.pathname","placeholder":null,"avatar":"hide","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://vujb9ter.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

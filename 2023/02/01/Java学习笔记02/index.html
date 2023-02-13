@@ -16,22 +16,26 @@
   <meta name="author" content="zhanghao">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Java学习笔记2南山的风吹散了谷堆,北海的水淹没了墓碑.不是每个人，在蓦然茴首时，都可以看得到灯火阑珊处的那个人  很基础的内容，简单记录一下。 Debug 工具Debug调试，又被称为断点调试，断点其实是一个标记，告诉Debug从标记的地方开始查看； 可以运行两个断点之间的代码 标识符命名规则 由数字、字母、下划线(_)和美元符($)组成 不能以数字开头 不能是关键字 区分大小写  标识符命名">
+    <meta name="description" content="Java学习笔记2南山的风吹散了谷堆,北海的水淹没了墓碑.不是每个人，在蓦然茴首时，都可以看得到灯火阑珊处的那个人  Debug 工具Debug调试，又被称为断点调试，断点其实是一个标记，告诉Debug从标记的地方开始查看； 可以运行两个断点之间的代码 标识符命名规则 由数字、字母、下划线(_)和美元符($)组成 不能以数字开头 不能是关键字 区分大小写  标识符命名规范小驼峰命名法：变量 规范1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java学习笔记02">
+<meta property="og:title" content="2_标识符,基本数据类型,Scanner,类型转换,二进制原码">
 <meta property="og:url" content="http://example.com/2023/02/01/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/index.html">
 <meta property="og:site_name" content="InMyCrown的博客">
-<meta property="og:description" content="Java学习笔记2南山的风吹散了谷堆,北海的水淹没了墓碑.不是每个人，在蓦然茴首时，都可以看得到灯火阑珊处的那个人  很基础的内容，简单记录一下。 Debug 工具Debug调试，又被称为断点调试，断点其实是一个标记，告诉Debug从标记的地方开始查看； 可以运行两个断点之间的代码 标识符命名规则 由数字、字母、下划线(_)和美元符($)组成 不能以数字开头 不能是关键字 区分大小写  标识符命名">
+<meta property="og:description" content="Java学习笔记2南山的风吹散了谷堆,北海的水淹没了墓碑.不是每个人，在蓦然茴首时，都可以看得到灯火阑珊处的那个人  Debug 工具Debug调试，又被称为断点调试，断点其实是一个标记，告诉Debug从标记的地方开始查看； 可以运行两个断点之间的代码 标识符命名规则 由数字、字母、下划线(_)和美元符($)组成 不能以数字开头 不能是关键字 区分大小写  标识符命名规范小驼峰命名法：变量 规范1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-01T13:07:29.000Z">
-<meta property="article:modified_time" content="2023-02-01T13:22:38.321Z">
+<meta property="article:modified_time" content="2023-02-13T17:09:55.001Z">
 <meta property="article:author" content="zhanghao">
-<meta property="article:tag" content="JAVA">
+<meta property="article:tag" content="JAVA SE，标识符">
+<meta property="article:tag" content="基本数据类型">
+<meta property="article:tag" content="Scanner">
+<meta property="article:tag" content="类型转换">
+<meta property="article:tag" content="二进制原码">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Java学习笔记02 - InMyCrown的博客</title>
+  <title>2_标识符,基本数据类型,Scanner,类型转换,二进制原码 - InMyCrown的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Java学习笔记02"></span>
+            <span id="subtitle" data-typed-text="2_标识符,基本数据类型,Scanner,类型转换,二进制原码"></span>
           
         </div>
 
@@ -294,14 +298,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Java学习笔记02</h1>
+            <h1 style="display: none">2_标识符,基本数据类型,Scanner,类型转换,二进制原码</h1>
             
             
               <div class="markdown-body">
                 
                 <h1 id="Java学习笔记2"><a href="#Java学习笔记2" class="headerlink" title="Java学习笔记2"></a>Java学习笔记2</h1><p><em>南山的风吹散了谷堆,北海的水淹没了墓碑.</em><br><em>不是每个人，在蓦然茴首时，都可以看得到灯火阑珊处的那个人</em></p>
 <hr>
-<p>很基础的内容，简单记录一下。</p>
 <h3 id="Debug-工具"><a href="#Debug-工具" class="headerlink" title="Debug 工具"></a>Debug 工具</h3><p>Debug调试，又被称为断点调试，断点其实是一个标记，告诉Debug从标记的地方开始查看；</p>
 <p>可以运行两个断点之间的代码</p>
 <h3 id="标识符命名规则"><a href="#标识符命名规则" class="headerlink" title="标识符命名规则"></a>标识符命名规则</h3><ul>
@@ -384,11 +387,47 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JAVA/" class="category-chain-item">JAVA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JAVA/JAVA-SE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="category-chain-item">JAVA SE学习记录</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/JAVA/">#JAVA</a>
+        <a href="/tags/JAVA-SE%EF%BC%8C%E6%A0%87%E8%AF%86%E7%AC%A6/">#JAVA SE，标识符</a>
+      
+        <a href="/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">#基本数据类型</a>
+      
+        <a href="/tags/Scanner/">#Scanner</a>
+      
+        <a href="/tags/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">#类型转换</a>
+      
+        <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8E%9F%E7%A0%81/">#二进制原码</a>
       
     </div>
   
@@ -400,7 +439,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Java学习笔记02</div>
+      <div>2_标识符,基本数据类型,Scanner,类型转换,二进制原码</div>
       <div>http://example.com/2023/02/01/Java学习笔记02/</div>
     </div>
     <div class="license-meta">
@@ -445,9 +484,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/02/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003/" title="Java学习笔记03">
+                      <a href="/2023/02/02/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003/" title="3_运算符,方法">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java学习笔记03</span>
+                        <span class="hidden-mobile">3_运算符,方法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -455,8 +494,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/01/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/" title="Java学习笔记01">
-                        <span class="hidden-mobile">Java学习笔记01</span>
+                      <a href="/2023/02/01/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/" title="1_JAVA配置知识">
+                        <span class="hidden-mobile">1_JAVA配置知识</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
