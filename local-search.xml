@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>navicat连接MySQL报错：1045 - Access denied for user ‘root‘@‘localhost‘ (using password NO)</title>
+    <link href="/2023/03/18/navicat%E8%BF%9E%E6%8E%A5MySQL%E6%8A%A5%E9%94%99%EF%BC%9A1045-Access-denied-for-user-%E2%80%98root%E2%80%98-%E2%80%98localhost%E2%80%98-using-password-NO/"/>
+    <url>/2023/03/18/navicat%E8%BF%9E%E6%8E%A5MySQL%E6%8A%A5%E9%94%99%EF%BC%9A1045-Access-denied-for-user-%E2%80%98root%E2%80%98-%E2%80%98localhost%E2%80%98-using-password-NO/</url>
+    
+    <content type="html"><![CDATA[<h1 id="navicat连接MySQL报错：1045-Access-denied-for-user-‘root‘-‘localhost‘-using-password-NO"><a href="#navicat连接MySQL报错：1045-Access-denied-for-user-‘root‘-‘localhost‘-using-password-NO" class="headerlink" title="navicat连接MySQL报错：1045 - Access denied for user ‘root‘@‘localhost‘ (using password NO)"></a>navicat连接MySQL报错：1045 - Access denied for user ‘root‘@‘localhost‘ (using password NO)</h1><p>这个错误通常是因为Navicat连接MySQL数据库时使用的用户名或密码不正确导致的。通过以下几个步骤来解决问题：</p><ol><li>确保在Navicat中使用的是正确的用户名和密码。在连接MySQL服务器时，输入MySQL数据库的用户名和密码才能成功连接。确保使用的用户名和密码正确并且拥有足够的权限来访问MySQL数据库。</li><li>确认MySQL服务器正在运行。如果MySQL服务器未运行，则无法连接到它。请确保MySQL服务器已启动并正在运行。</li><li>确认MySQL服务器允许远程连接。如果您正在尝试从远程计算机连接到MySQL服务器，则需要确认MySQL服务器已配置为允许远程连接。可以检查MySQL配置文件中的bind-address选项以及防火墙配置，以确保允许远程连接。</li><li>检查MySQL服务器的日志文件。如果以上步骤都没有解决问题，则可以查看MySQL服务器的日志文件，以查看是否有任何错误或警告消息。可以尝试在日志文件中查找与访问被拒绝相关的信息。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据库相关</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>navicat</tag>
+      
+      <tag>MySQL</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>JsonArrayRequest()</title>
     <link href="/2023/03/18/JsonArrayRequest/"/>
     <url>/2023/03/18/JsonArrayRequest/</url>
