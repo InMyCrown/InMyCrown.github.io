@@ -1,0 +1,928 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1A2B44">
+  <meta name="author" content="zhanghao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Android Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）这个问题耗费了大量时间，踩了很多坑，下就解决过程进行记录 1.不使用服务器连接MySQL1.1添加 MySQL 的 JDBC 驱动程序123dependencies &amp;#123;    implementation &amp;#x27;mysql:mysql-connector-java:8.0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Studio中通过PHP脚本在Apache服务器验证账号密码">
+<meta property="og:url" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/index.html">
+<meta property="og:site_name" content="InMyCrown的博客">
+<meta property="og:description" content="Android Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）这个问题耗费了大量时间，踩了很多坑，下就解决过程进行记录 1.不使用服务器连接MySQL1.1添加 MySQL 的 JDBC 驱动程序123dependencies &amp;#123;    implementation &amp;#x27;mysql:mysql-connector-java:8.0.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/1.png">
+<meta property="og:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/2.png">
+<meta property="og:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/3.png">
+<meta property="og:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/4.png">
+<meta property="og:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/5.png">
+<meta property="article:published_time" content="2023-03-21T02:11:18.000Z">
+<meta property="article:modified_time" content="2023-03-22T14:43:14.856Z">
+<meta property="article:author" content="zhanghao">
+<meta property="article:tag" content="Android studio">
+<meta property="article:tag" content="MySql">
+<meta property="article:tag" content="Apache服务器，PHP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/1.png">
+  
+  
+  
+  <title>Android Studio中通过PHP脚本在Apache服务器验证账号密码 - InMyCrown的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","app_key":"V2r5I2Th3xEnM5TBRcIomfhi","server_url":"https://vujb9ter.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>InMyCrown</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Android Studio中通过PHP脚本在Apache服务器验证账号密码"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-21 10:11" pubdate>
+          2023年3月21日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          134 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Android Studio中通过PHP脚本在Apache服务器验证账号密码</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Android-Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）"><a href="#Android-Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）" class="headerlink" title="Android Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）"></a>Android Studio中通过PHP脚本在Apache服务器验证账号密码是否正确（在MySql中是否存在）</h1><p><em>这个问题耗费了大量时间，踩了很多坑，下就解决过程进行记录</em></p>
+<h2 id="1-不使用服务器连接MySQL"><a href="#1-不使用服务器连接MySQL" class="headerlink" title="1.不使用服务器连接MySQL"></a>1.不使用服务器连接MySQL</h2><h4 id="1-1添加-MySQL-的-JDBC-驱动程序"><a href="#1-1添加-MySQL-的-JDBC-驱动程序" class="headerlink" title="1.1添加 MySQL 的 JDBC 驱动程序"></a>1.1添加 MySQL 的 JDBC 驱动程序</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">dependencies &#123;<br>    implementation <span class="hljs-string">&#x27;mysql:mysql-connector-java:8.0.27&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2验证账号密码"><a href="#1-2验证账号密码" class="headerlink" title="1.2验证账号密码"></a>1.2验证账号密码</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">import</span> android.os.Bundle<br><span class="hljs-keyword">import</span> android.widget.Toast<br><span class="hljs-keyword">import</span> androidx.appcompat.app.AppCompatActivity<br><span class="hljs-keyword">import</span> java.sql.DriverManager<br><span class="hljs-keyword">import</span> java.sql.SQLException<br><span class="hljs-keyword">import</span> java.sql.Statement<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginActivity</span> : <span class="hljs-type">AppCompatActivity</span>() &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> DATABASE_URL = <span class="hljs-string">&quot;jdbc:mysql://localhost:3306/my_database&quot;</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> DATABASE_USER = <span class="hljs-string">&quot;root&quot;</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> DATABASE_PASSWORD = <span class="hljs-string">&quot;password&quot;</span><br><br>    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(savedInstanceState: <span class="hljs-type">Bundle</span>?)</span></span> &#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState)<br>        setContentView(R.layout.activity_login)<br><br>        <span class="hljs-keyword">val</span> username = <span class="hljs-string">&quot;input_username&quot;</span> <span class="hljs-comment">// 替换为实际输入的用户名</span><br>        <span class="hljs-keyword">val</span> password = <span class="hljs-string">&quot;input_password&quot;</span> <span class="hljs-comment">// 替换为实际输入的密码</span><br><br>        <span class="hljs-keyword">val</span> connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD)<br>        <span class="hljs-keyword">val</span> statement = connection.createStatement()<br>        <span class="hljs-keyword">val</span> query = <span class="hljs-string">&quot;SELECT * FROM users WHERE username = &#x27;<span class="hljs-variable">$username</span>&#x27; AND password = &#x27;<span class="hljs-variable">$password</span>&#x27;&quot;</span><br>        <span class="hljs-keyword">val</span> resultSet = statement.executeQuery(query)<br><br>        <span class="hljs-keyword">if</span> (resultSet.next()) &#123;<br>            Toast.makeText(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;登录成功&quot;</span>, Toast.LENGTH_SHORT).show()<br>            <span class="hljs-comment">// 在此处添加成功提示框的代码</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            Toast.makeText(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;账号或密码错误&quot;</span>, Toast.LENGTH_SHORT).show()<br>            <span class="hljs-comment">// 在此处添加错误提示框的代码</span><br>        &#125;<br><br>        resultSet.close()<br>        statement.close()<br>        connection.close()<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p> <em>注释：onCreate() 方法中获取输入的用户名和密码，然后使用 DriverManager 类建立与数据库的连接。然后，我们创建了一个 Statement 对象并执行了查询语句。如果结果集中包含数据，则认为登录成功，并使用 Toast 显示成功提示框。</em></p>
+<p><strong>问题：安卓虚拟机中不能访问Localhost，应改为ip地址，这就要求程序联网，同时 ‘mysql-connector-java’, version: ‘8.0.27’中缺少所需的包，会导致程序运行错误;当程序联网时，不能在主线程实现，可以在协程或者创建子线程完成； 一个重要问题——DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD)一直报错导致程序闪退，降低mysql-connector-java版本后解决</strong></p>
+<p>解决：</p>
+<p>1.导入依赖</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">//数据库连接</span><br>implementation group: <span class="hljs-string">&#x27;mysql&#x27;</span>, name: <span class="hljs-string">&#x27;mysql-connector-java&#x27;</span>, version: <span class="hljs-string">&#x27;5.1.49&#x27;</span><br><span class="hljs-comment">//协程</span><br>implementation <span class="hljs-string">&#x27;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>2.JDBC_URL更换为ip地址</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-string">&quot;jdbc:mysql://192.168.56.1:3306/test？useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8&quot;</span>,<br></code></pre></td></tr></table></figure>
+
+<p>更改后的连接数据库测试代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">CoroutineScope(Dispatchers.IO).launch &#123;<br>    <span class="hljs-keyword">var</span> con: Connection<br>    <span class="hljs-keyword">var</span> sql: Statement<br>    <span class="hljs-keyword">try</span> &#123;<br>        Class.forName(<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>);   <span class="hljs-comment">//加载MYSQL JDBC驱动程序</span><br>        println(<span class="hljs-string">&quot;成功加载Mysql驱动程序!&quot;</span>);<br>    &#125; <span class="hljs-keyword">catch</span> (e: Exception) &#123;<br>        print(<span class="hljs-string">&quot;加载Mysql驱动程序时出错!&quot;</span>);<br>        e.printStackTrace();<br>    &#125;<br>    <span class="hljs-keyword">try</span> &#123;<br>        con = DriverManager.getConnection(<br>            <span class="hljs-string">&quot;jdbc:mysql://192.168.56.1:3306/test?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8&quot;</span>,<br>            <span class="hljs-string">&quot;root&quot;</span>,<br>            <span class="hljs-string">&quot;123456&quot;</span><br>        );<span class="hljs-comment">//连接数据库</span><br>        println(<span class="hljs-string">&quot;成功连接Mysql服务器!&quot;</span>);<br>        sql=con.createStatement()<br>        <span class="hljs-keyword">val</span> query = <span class="hljs-string">&quot;SELECT * FROM users&quot;</span><br>        <span class="hljs-keyword">val</span> resultSet=sql.executeQuery(query)<br>        <span class="hljs-keyword">while</span>(resultSet.next())&#123;<br>            <span class="hljs-comment">//val ss=resultSet.getString(2)</span><br>            withContext(Dispatchers.Main)&#123;<br><br>            &#125;<br>        &#125;<br>    &#125; <span class="hljs-keyword">catch</span> (e: Exception) &#123;<br>        print(<span class="hljs-string">&quot;连接数据库失败!&quot;</span>);<br>        e.printStackTrace();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>控制台结果：</p>
+ <img src="/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/1.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<p>在完成这段代码中了解到：</p>
+<h2 id="SQL注入问题"><a href="#SQL注入问题" class="headerlink" title="SQL注入问题"></a>SQL注入问题</h2><p><strong>概要：</strong>SQL 注入攻击是一种常见的网络攻击，它利用程序没有正确过滤用户输入的数据而向数据库中插入恶意代码。攻击者通过构造一些精心设计的输入数据，让程序将恶意代码当做正常的 SQL 语句来执行，从而获取非法的数据、破坏数据库的完整性，甚至控制整个系统。</p>
+<p><strong>示例：</strong></p>
+<p>查询语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> username <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;$username&#x27;</span> <span class="hljs-keyword">AND</span> password <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;$password&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>假设用户输入的用户名是 <code>admin&#39;--</code>，密码是任意值。这时，构造出来的查询语句就变成了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> username <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;admin&#x27;</span><span class="hljs-comment">--&#x27; AND password = &#x27;任意值&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>后果：</strong>选取 <code>users</code> 表中用户名为 <code>admin</code> 的记录，后面的部分是注释掉的。这就意味着用户可以不需要知道正确的密码就能成功登录，从而进行非法的操作。</p>
+<p>为了防止 SQL 注入攻击，程序应该正确地过滤用户输入的数据，避免将恶意代码当做正常的 SQL 语句来执行。在上面的示例中，可以使用参数化查询的方式来防止 SQL 注入攻击，例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> username <span class="hljs-operator">=</span> ? <span class="hljs-keyword">AND</span> password <span class="hljs-operator">=</span> ?<br></code></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong>在这种方式下，程序会将用户输入的数据作为参数传递给 SQL 查询语句，而不是直接将数据拼接到 SQL 查询语句中。这样，即使用户输入恶意代码，也不会对数据库造成任何危害。</p>
+<h5 id="故：最后更改上述代码为"><a href="#故：最后更改上述代码为" class="headerlink" title="故：最后更改上述代码为"></a>故：最后更改上述代码为</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// val statement = connection.createStatement()</span><br><span class="hljs-comment">// val query = &quot;SELECT * FROM users WHERE username = &#x27;$username&#x27; AND password = &#x27;$password&#x27;&quot;</span><br>   <span class="hljs-keyword">val</span> query = <span class="hljs-string">&quot;SELECT * FROM users WHERE username = ? AND password = ?&quot;</span><br>   <span class="hljs-keyword">val</span> statement = connection.prepareStatement(query)<br>   statement.setString(<span class="hljs-number">1</span>, username)<br>   statement.setString(<span class="hljs-number">2</span>, password)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">//补充了一下之前连接数据库并验证的代码，还是本地验证</span><br>Thread(Runnable &#123;<br>    <span class="hljs-keyword">val</span> DATABASE_URL = <span class="hljs-string">&quot;jdbc:mysql://192.168.56.1:3306/test?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8&quot;</span><br>    <span class="hljs-keyword">val</span> DATABASE_USER = <span class="hljs-string">&quot;root&quot;</span><br>    <span class="hljs-keyword">val</span> DATABASE_PASSWORD = <span class="hljs-string">&quot;123456&quot;</span><br>    <span class="hljs-keyword">val</span> username = bd.user.text.toString() <span class="hljs-comment">// 替换为实际输入的用户名</span><br>    <span class="hljs-keyword">val</span> password = bd.password.text.toString() <span class="hljs-comment">// 替换为实际输入的密码</span><br>    Class.forName(<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>)<br>    <span class="hljs-keyword">val</span> connection: Connection =<br>        DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD)<br>    <span class="hljs-keyword">val</span> statement = connection.createStatement()<br>    <span class="hljs-keyword">val</span> query = <span class="hljs-string">&quot;SELECT * FROM users WHERE user = &#x27;<span class="hljs-variable">$username</span>&#x27; AND password = &#x27;<span class="hljs-variable">$password</span>&#x27;&quot;</span><br>    <span class="hljs-keyword">val</span> resultSet = statement.executeQuery(query)<br>    <span class="hljs-keyword">if</span> (resultSet.next()) &#123;<br>        <span class="hljs-comment">// 成功</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 失败</span><br>    &#125;<br>    resultSet.close()<br>    statement.close()<br>    connection.close()<br><br>&#125;).start()<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="附：使用命令行工具Windows-PowerShell验证数据库连接-URL"><a href="#附：使用命令行工具Windows-PowerShell验证数据库连接-URL" class="headerlink" title="附：使用命令行工具Windows PowerShell验证数据库连接 URL"></a>附：使用命令行工具Windows PowerShell验证数据库连接 URL</h2><p>在数据库一直连不上时，找到了这个办法，但是可能还是JDBC的版本问题，在尝试的时候报错了，在此记录一下该方法。</p>
+<ol>
+<li>打开 Windows PowerShell。 Windows 键 + R 组合键：输入 “powershell” 。</li>
+<li>输入以下命令，使用 JDBC 驱动程序测试数据库连接 URL：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">java -cp &lt;path/to/jdbc/driver.jar&gt;;&lt;path/to/your/code&gt; TestConnection &lt;database_url&gt; &lt;username&gt; &lt;password&gt;<br></code></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>&lt;path/to/jdbc/driver.jar&gt;</code> 是 JDBC 驱动程序的路径。</li>
+<li><code>&lt;path/to/your/code&gt;</code> 是你的代码所在的路径。</li>
+<li><code>&lt;database_url&gt;</code> 是数据库连接 URL。</li>
+<li><code>&lt;username&gt;</code> 是连接数据库所使用的用户名。</li>
+<li><code>&lt;password&gt;</code> 是连接数据库所使用的密码。</li>
+</ul>
+<p>注：<code>&lt;path/to/your/code&gt;</code> 参数示例</p>
+<ul>
+<li>相对路径：<code>.\app\src\main\java\com\example\myapp</code></li>
+<li>绝对路径：<code>C:\AndroidProjects\MyApp\app\src\main\java\com\example\myapp</code></li>
+</ul>
+<p>例如， JDBC 驱动程序位于 “C:\mysql-connector-java-8.0.28.jar”，代码位于 “C:\myproject\src”，数据库连接 URL 是 “jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;mydatabase”，用户名是 “root”，密码是 “password”，则可以使用以下命令来测试数据库连接 URL：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">java -cp C:\mysql-connector-java-<span class="hljs-number">8.0</span><span class="hljs-number">.28</span>.jar;C:\myproject\src TestConnection jdbc:mysql:<span class="hljs-comment">//localhost:3306/mydatabase root password</span><br></code></pre></td></tr></table></figure>
+
+<p>如果连接成功，则将看到类似以下内容的输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Connected to database successfully.<br></code></pre></td></tr></table></figure>
+
+<p>否则，将看到与连接相关的错误信息。根据错误信息，进行修改。</p>
+<h2 id="验证Android-应用程序可以通过网络连接到-MySQL-服务器"><a href="#验证Android-应用程序可以通过网络连接到-MySQL-服务器" class="headerlink" title="验证Android 应用程序可以通过网络连接到 MySQL 服务器"></a>验证Android 应用程序可以通过网络连接到 MySQL 服务器</h2><p>Way：在 Android 应用程序中使用网络请求库（例如 OkHttp、Volley、Retrofit 等）向 MySQL 服务器发送 HTTP 请求。</p>
+<p>将请求发送到服务器上的一个简单的 PHP 脚本，该脚本将连接到 MySQL 数据库并返回一些简单的数据（示例代码为“Hello World”）作为响应。以此验证 Android 应用程序可以通过网络连接到 MySQL 服务器。</p>
+<p> PHP 脚本示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>  <span class="hljs-variable">$hostname</span> = <span class="hljs-string">&quot;localhost&quot;</span>; <br>  <span class="hljs-variable">$username</span> = <span class="hljs-string">&quot;root&quot;</span>; <br>  <span class="hljs-variable">$password</span> = <span class="hljs-string">&quot;password&quot;</span>; <br>  <span class="hljs-variable">$database</span> = <span class="hljs-string">&quot;mydatabase&quot;</span>; <br><br>  <span class="hljs-variable">$conn</span> = <span class="hljs-title function_ invoke__">mysqli_connect</span>(<span class="hljs-variable">$hostname</span>, <span class="hljs-variable">$username</span>, <span class="hljs-variable">$password</span>, <span class="hljs-variable">$database</span>);<br><br>  <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">mysqli_connect_errno</span>()) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Failed to connect to MySQL: &quot;</span> . <span class="hljs-title function_ invoke__">mysqli_connect_error</span>();<br>    <span class="hljs-keyword">exit</span>();<br>  &#125;<br><br>  <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hello World&quot;</span>;<br><br>  <span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$conn</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>将该脚本保存为 <code>test.php</code> 并将其放置在 Web 服务器的根目录下。</li>
+<li>在 Android 应用程序中使用网络请求库向 <code>http://&lt;your_server_ip&gt;/test.php</code> 发送 GET 请求。</li>
+<li>检查响应是否为 “Hello World”。判断 Android 应用程序能否通过网络连接到 MySQL 服务器。</li>
+</ol>
+<h2 id="服务器上传JSON数据，验证账号密码"><a href="#服务器上传JSON数据，验证账号密码" class="headerlink" title="服务器上传JSON数据，验证账号密码"></a>服务器上传JSON数据，验证账号密码</h2><ol>
+<li><p>在 Android 应用程序中创建一个包含账号和密码的 JSON 对象：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> json = JSONObject().apply &#123;<br>    put(<span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;&lt;your_username&gt;&quot;</span>)<br>    put(<span class="hljs-string">&quot;password&quot;</span>, <span class="hljs-string">&quot;&lt;your_password&gt;&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 Android 应用程序中创建一个子线程，使用 HttpURLConnection 或 OkHttp 等库来将 JSON 数据上传到服务器：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> url = URL(<span class="hljs-string">&quot;&lt;your_server_url&gt;&quot;</span>)<br><span class="hljs-keyword">val</span> connection = url.openConnection() <span class="hljs-keyword">as</span> HttpURLConnection<br>connection.requestMethod = <span class="hljs-string">&quot;POST&quot;</span><br>connection.doOutput = <span class="hljs-literal">true</span><br>connection.setRequestProperty(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>)<br>connection.setRequestProperty(<span class="hljs-string">&quot;Accept&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>)       <span class="hljs-comment">//设置的是处理数据格式</span><br><br>OutputStreamWriter(connection.outputStream).apply &#123;<br>    write(json.toString())<br>    flush()<br>&#125;<br><br><span class="hljs-keyword">if</span> (connection.responseCode == HttpURLConnection.HTTP_OK) &#123;<br>    <span class="hljs-comment">// 上传成功</span><br>    <span class="hljs-comment">// 在这里处理服务器返回的 JSON 数据，并验证账号密码是否正确</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 上传失败</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 Android 应用程序中解析服务器返回的 JSON 数据，并验证账号密码是否正确：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> response = connection.inputStream.bufferedReader().use &#123; it.readText() &#125;<br><span class="hljs-keyword">val</span> jsonResponse = JSONObject(response)<br><br><span class="hljs-keyword">if</span> (jsonResponse.getBoolean(<span class="hljs-string">&quot;success&quot;</span>)) &#123;<br>    <span class="hljs-comment">// 账号密码正确</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 账号密码错误</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 Android 应用程序中将上述代码放在一个按钮的点击事件中，在用户点击按钮后上传 JSON 数据并验证账号密码是否正确：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> submitBtn = findViewById&lt;Button&gt;(R.id.submitBtn)<br>submitBtn.setOnClickListener &#123;<br>    Thread(Runnable &#123;<br>        <span class="hljs-comment">// 将上述代码放在这里</span><br>    &#125;).start()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="val-jsonResponse-x3D-JSONObject-response-报错"><a href="#val-jsonResponse-x3D-JSONObject-response-报错" class="headerlink" title="val jsonResponse &#x3D; JSONObject(response)报错"></a>val jsonResponse &#x3D; JSONObject(response)报错</h4><p>原因：<code>response</code> 不是一个有效的 JSON 字符串。</p>
+</li>
+</ol>
+<p>在使用 <code>JSONObject</code> 构造函数时，输入的参数必须是一个有效的 JSON 字符串。如果输入的字符串格式不正确或不完整，则可能会导致解析错误。</p>
+<p>解决：将服务器返回的响应数据打印出来，检查它是否是一个有效的 JSON 字符串。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">Log.d(<span class="hljs-string">&quot;Response&quot;</span>, response)<br></code></pre></td></tr></table></figure>
+
+<p>这样在Logcat中就会出现：</p>
+ <img src="/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/2.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h2 id="同一个局域网（LAN）下，远程计算机访问-MySQL-数据库-失败了"><a href="#同一个局域网（LAN）下，远程计算机访问-MySQL-数据库-失败了" class="headerlink" title="同一个局域网（LAN）下，远程计算机访问 MySQL 数据库[失败了]"></a>同一个局域网（LAN）下，远程计算机访问 MySQL 数据库[失败了]</h2><p>另一台计算机开启 MySQL 数据库并且设置网络权限，使用该计算机的 IP 地址或主机名来访问该数据库。</p>
+<p>在连接字符串中指定该计算机的 IP 地址或主机名，如下所示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">jdbc:mysql:<span class="hljs-comment">//&lt;host&gt;:&lt;port&gt;/&lt;database_name&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;host&gt;</code> ：要访问的计算机的 IP 地址或主机名</li>
+<li><code>&lt;port&gt;</code> ： MySQL 数据库的端口号（通常是 3306）</li>
+<li><code>&lt;database_name&gt;</code> ：要连接的数据库的名称</li>
+</ul>
+<p>注：从远程计算机访问 MySQL 数据库，该计算机必须启用 MySQL 服务器，并且已经在 MySQL 服务器中为 IP 地址或主机名授予了正确的权限。</p>
+<p>MySQL 服务器配置步骤：</p>
+<p>1.编辑 MySQL 服务器的配置文件 <code>my.cnf</code>&#x2F;my.ini，将 <code>bind-address</code> 参数设置为服务器的 IP 地址或 <code>0.0.0.0</code>（表示接受所有远程连接）。————<strong>通过查看安装目录，命令行，隐藏文件等方法，都没能找到这个文件，下面步骤配置成功了，但是远程连接还是失败</strong></p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">bind-address</span> <span class="hljs-operator">=</span> <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
+
+<p>2.在 MySQL 服务器中创建一个新用户，并为该用户授予远程访问的权限。以下命令将创建一个名为 <code>remoteuser</code> 的新用户，密码为 <code>password</code>，并为该用户授予访问名为 <code>mydatabase</code> 的数据库的权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER &#x27;remoteuser&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;password&#x27;;<br>GRANT ALL PRIVILEGES ON mydatabase.* TO &#x27;remoteuser&#x27;@&#x27;%&#x27;;<br></code></pre></td></tr></table></figure>
+
+<p><code>&#39;%&#39;</code> 表示该用户可以从任何 IP 地址访问 MySQL 服务器【不安全，应设定为特定的 IP 地址或主机名】</p>
+<p>3.重启 MySQL 服务器</p>
+<h1 id="Mysql更改从localhost访问到任意IP访问"><a href="#Mysql更改从localhost访问到任意IP访问" class="headerlink" title="Mysql更改从localhost访问到任意IP访问"></a>Mysql更改从localhost访问到任意IP访问</h1><p><strong>mysql安装好后默认只能在localhost访问</strong>，重新设定后才能用192.***这种ip地址访问数据库</p>
+<h5 id="1-在mysql安装路径-bin-下，进入控制台"><a href="#1-在mysql安装路径-bin-下，进入控制台" class="headerlink" title="1.在mysql安装路径 bin 下，进入控制台"></a>1.在mysql安装路径 bin 下，进入控制台</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">bin&gt;mysql -u root -<span class="hljs-selector-tag">p</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-把localhost用-代替"><a href="#2-把localhost用-代替" class="headerlink" title="2.把localhost用%代替"></a>2.把localhost用%代替</h5><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">mysql&gt; use mysql<br>mysql&gt; <span class="hljs-keyword">update</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">set</span> host = <span class="hljs-string">&#x27;%&#x27;</span>  <span class="hljs-keyword">where</span> <span class="hljs-keyword">user</span> =<span class="hljs-string">&#x27;root&#x27;</span>;<br>mysql&gt; flush <span class="hljs-keyword">privileges</span>;<br>mysql&gt; <span class="hljs-keyword">select</span> <span class="hljs-string">&#x27;host&#x27;</span>,<span class="hljs-string">&#x27;user&#x27;</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> <span class="hljs-keyword">user</span>=<span class="hljs-string">&#x27;root&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>同样：用“%”不安全，最好设置为特定ip地址[数据库中没有重要数据，就没有特别设置]</strong></p>
+<h2 id="php文件用Apache上传到服务器，从另一台计算机远程访问"><a href="#php文件用Apache上传到服务器，从另一台计算机远程访问" class="headerlink" title="php文件用Apache上传到服务器，从另一台计算机远程访问"></a>php文件用Apache上传到服务器，从另一台计算机远程访问</h2><h5 id="注意两点"><a href="#注意两点" class="headerlink" title="注意两点"></a>注意两点</h5><ol>
+<li>确认防火墙没有阻止访问：如果服务器上的防火墙已启用并阻止了 HTTP 请求，需要允许 HTTP 请求通过防火墙。</li>
+<li>确认 Wi-Fi 网络连接正常：确保计算机已连接到同一 Wi-Fi 网络。</li>
+</ol>
+<p>防火墙访问设置:  Windows Defender 防火墙中 - 高级设置 - 入站规则</p>
+ <img src="/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/3.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h2 id="Android-应用程序中上传-JSON-数据并验证账号密码"><a href="#Android-应用程序中上传-JSON-数据并验证账号密码" class="headerlink" title="Android 应用程序中上传 JSON 数据并验证账号密码"></a>Android 应用程序中上传 JSON 数据并验证账号密码</h2><p>将验证的结果转换为 JSON 数据，然后上传到服务器。服务器可以通过接收到的 JSON 数据进行相应的处理，例如将其存储到数据库中或者验证 JSON 数据中的账号密码是否正确。</p>
+<p>将 MySQL 数据库中的数据转换成 JSON 格式，可以使用 MySQL 自带的 JSON 函数，如 <code>JSON_OBJECT</code> 和 <code>JSON_ARRAY</code>，将数据库中的数据转换为 JSON 对象或者 JSON 数组。然后将 JSON 数据上传到服务器进行处理。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">// 获取 POST 请求中的 JSON 数据</span><br><span class="hljs-variable">$json</span> = <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-string">&#x27;php://input&#x27;</span>);<br><br><span class="hljs-comment">// 将 JSON 数据解析为关联数组</span><br><span class="hljs-variable">$data</span> = <span class="hljs-title function_ invoke__">json_decode</span>(<span class="hljs-variable">$json</span>, <span class="hljs-literal">true</span>);<br><br><span class="hljs-comment">// 在此处验证账号密码是否正确</span><br><br><br><span class="hljs-comment">// 返回 JSON 响应</span><br><span class="hljs-variable">$response</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;success&#x27;</span> =&gt; <span class="hljs-literal">true</span>, <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;验证成功&#x27;</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">json_encode</span>(<span class="hljs-variable">$response</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>注意点：<code>$json = file_get_contents(&#39;php://input&#39;);</code>这是上传<strong>JSON代码</strong>，也就是Android中POST的结果，我在处理数据的时候，一直当做Param&#x2F;Form-data处理，在POST请求服务器测试的时候，Form-data可以，但是Param不行，就以为AS中失败的原因是没有处理Param参数，费了很长时间解决了这个问题[解决方法很简单]，在到AS中测试，失败了，崩溃！！！</p>
+<h2 id="下面先列出正确执行的步骤："><a href="#下面先列出正确执行的步骤：" class="headerlink" title="下面先列出正确执行的步骤："></a>下面先列出正确执行的步骤：</h2><h4 id="1-php脚本中验证账号密码-使用-MySQLi（MySQL-Improved-Extension）扩展库连接-MySQL"><a href="#1-php脚本中验证账号密码-使用-MySQLi（MySQL-Improved-Extension）扩展库连接-MySQL" class="headerlink" title="1.php脚本中验证账号密码[使用 MySQLi（MySQL Improved Extension）扩展库连接 MySQL]"></a>1.php脚本中验证账号密码[使用 MySQLi（MySQL Improved Extension）扩展库连接 MySQL]</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$json</span> = <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-string">&#x27;php://input&#x27;</span>);<br><span class="hljs-variable">$data</span> = <span class="hljs-title function_ invoke__">json_decode</span>(<span class="hljs-variable">$json</span>, <span class="hljs-literal">true</span>);<br><span class="hljs-variable">$user</span> = <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;user&#x27;</span>];<br><span class="hljs-variable">$password</span> = <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;password&#x27;</span>];<br><span class="hljs-comment">//echo &quot;user = $user, password = $password\n&quot;;</span><br><span class="hljs-comment">// 使用解析后的 $user 和 $password 进行后续操作</span><br><br><br><span class="hljs-comment">// 获取请求参数</span><br><span class="hljs-comment">//$user = isset($_REQUEST[&quot;user&quot;]) ? $_REQUEST[&quot;user&quot;] : &quot;&quot;;</span><br><span class="hljs-comment">//$password = isset($_REQUEST[&quot;password&quot;]) ? $_REQUEST[&quot;password&quot;] : &quot;&quot;;</span><br><span class="hljs-comment">//echo &quot;user = $user, password = $password\n&quot;;</span><br><span class="hljs-comment">// 调试语句，查看参数是否正确接收</span><br><span class="hljs-comment">//echo &quot;user = $user, password = $password\n&quot;;</span><br><span class="hljs-comment">//echo &quot;user = &quot;.$_GET[&quot;user&quot;].&quot;\n&quot;;</span><br><br><span class="hljs-comment">// 数据库连接信息</span><br><span class="hljs-variable">$servername</span> = <span class="hljs-string">&quot;localhost&quot;</span>;<br><span class="hljs-variable">$userdbname</span> = <span class="hljs-string">&quot;root&quot;</span>;<br><span class="hljs-variable">$passdbword</span> = <span class="hljs-string">&quot;123456&quot;</span>;<br><span class="hljs-variable">$dbname</span> = <span class="hljs-string">&quot;mydatabase&quot;</span>;<br><br><span class="hljs-comment">// 创建连接</span><br><span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>(<span class="hljs-variable">$servername</span>, <span class="hljs-variable">$userdbname</span>, <span class="hljs-variable">$passdbword</span>, <span class="hljs-variable">$dbname</span>);<br><br><span class="hljs-comment">// 检查连接是否成功</span><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$conn</span>-&gt;connect_error) &#123;<br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;连接失败: &quot;</span> . <span class="hljs-variable">$conn</span>-&gt;connect_error);<br>&#125;<br><br><span class="hljs-comment">// 设置字符集</span><br><span class="hljs-variable">$conn</span>-&gt;<span class="hljs-title function_ invoke__">set_charset</span>(<span class="hljs-string">&quot;utf8&quot;</span>);<br><br><span class="hljs-comment">// 获取请求参数</span><br><span class="hljs-comment">//$user =  $user;</span><br><span class="hljs-comment">//$password = $password;</span><br><br><span class="hljs-comment">// 执行查询</span><br><span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;SELECT * FROM users WHERE user=&#x27;<span class="hljs-subst">$user</span>&#x27; AND password=&#x27;<span class="hljs-subst">$password</span>&#x27;&quot;</span>;<br><span class="hljs-comment">//echo &quot;user = $user, password = $password\n&quot;;</span><br><span class="hljs-comment">//$sql = &quot;SELECT * FROM users WHERE user=&#x27;&quot; . $_GET[&quot;user&quot;] . &quot;&#x27; AND password=&#x27;&quot; . $_GET[&quot;password&quot;] . &quot;&#x27;&quot;;</span><br><span class="hljs-variable">$result</span> = <span class="hljs-variable">$conn</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-variable">$sql</span>);<br><br><span class="hljs-comment">// 检查结果是否存在</span><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$result</span>-&gt;num_rows &gt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// 验证成功</span><br>    <span class="hljs-variable">$response</span>[<span class="hljs-string">&quot;user_exists&quot;</span>] = <span class="hljs-literal">true</span>;<br>    <span class="hljs-variable">$response</span>[<span class="hljs-string">&quot;password_matches&quot;</span>] = <span class="hljs-literal">true</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 验证失败</span><br>    <span class="hljs-variable">$response</span>[<span class="hljs-string">&quot;user_exists&quot;</span>] = <span class="hljs-literal">false</span>;<br>    <span class="hljs-variable">$response</span>[<span class="hljs-string">&quot;password_matches&quot;</span>] = <span class="hljs-literal">false</span>;<br>&#125;<br><br><span class="hljs-comment">// 返回 JSON 格式响应</span><br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">json_encode</span>(<span class="hljs-variable">$response</span>);<br><br><span class="hljs-comment">// 关闭连接</span><br><span class="hljs-variable">$conn</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();<br><br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>细节：</strong></p>
+<p>从POST过来的参数，有两种格式（暂只讨论这两种）：from-data，param；</p>
+<p>. $_GET[“user”] .获得的是param数据</p>
+<p>. $_POST[“user”] .获得的是from-data数据</p>
+<p>代码块</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 获取请求参数</span><br><span class="hljs-comment">//$user = isset($_REQUEST[&quot;user&quot;]) ? $_REQUEST[&quot;user&quot;] : &quot;&quot;;</span><br><span class="hljs-comment">//$password = isset($_REQUEST[&quot;password&quot;]) ? $_REQUEST[&quot;password&quot;] : &quot;&quot;;</span><br></code></pre></td></tr></table></figure>
+
+<p>作用是获得：POST,GET,COOKIE里的所有参数数值</p>
+<h5 id="PHP代码中未正确处理POST请求中的参数，会报错：Undefined-array-key"><a href="#PHP代码中未正确处理POST请求中的参数，会报错：Undefined-array-key" class="headerlink" title="PHP代码中未正确处理POST请求中的参数，会报错：Undefined array key"></a>PHP代码中未正确处理POST请求中的参数，会报错：Undefined array key</h5><p>确保在客户端中使用的键与PHP代码中的键匹配。如在Postman中使用键“user”和“password”，则确保PHP代码中使用的是相同的键名。</p>
+<p>使用<code>var_dump($_POST)</code>在PHP代码中打印出POST请求中的内容，以便检查请求中传递的键和值是否正确。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <br><span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$_POST</span>); <br><span class="hljs-meta">?&gt;</span><br><span class="hljs-comment">//没有的话就提示array(0) &#123; &#125;</span><br><span class="hljs-comment">//            Warning: Undefined array key &quot;***&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>以下代码检查是否有 POST 数据被成功提交：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>] == <span class="hljs-string">&#x27;POST&#x27;</span>) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;POST data received&quot;</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;No POST data received&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Postman测试："><a href="#Postman测试：" class="headerlink" title="Postman测试："></a>Postman测试：</h2><p>当 Postman 发送一个 POST 请求时，需要确保请求的数据是使用 “form-data” 类型发送的，而不是 “x-www-form-urlencoded” 类型。如果使用 “x-www-form-urlencoded” 类型，服务器可能无法正确解析数据，导致无法获取 POST 参数。</p>
+<p>即：</p>
+ <img src="/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/4.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h5 id="AS处理代码"><a href="#AS处理代码" class="headerlink" title="AS处理代码"></a>AS处理代码</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"> <span class="hljs-keyword">val</span> submitBtn = findViewById&lt;Button&gt;(R.id.button)<br>        submitBtn.setOnClickListener &#123;<br>            <span class="hljs-keyword">val</span> username = bd.user.text.toString()     <span class="hljs-comment">// 替换为实际输入的用户名</span><br>            <span class="hljs-keyword">val</span> password = bd.password.text.toString() <span class="hljs-comment">// 替换为实际输入的密码</span><br>            <span class="hljs-comment">//1.创建一个新的线程来执行网络请求，以避免在主线程中进行网络操作而导致 UI 界面卡顿。</span><br>            Thread &#123;<br>                <span class="hljs-comment">//2.创建一个 URL 对象，并使用该对象打开一个 HttpURLConnection 连接对象。</span><br>                <span class="hljs-keyword">val</span> url = URL(<span class="hljs-string">&quot;http://192.168.56.1/checkp.php&quot;</span>)<br>                <span class="hljs-keyword">val</span> connection = url.openConnection() <span class="hljs-keyword">as</span> HttpURLConnection<br>                <span class="hljs-comment">//3.设置请求方法为 POST，并设置连接属性。</span><br>                connection.requestMethod = <span class="hljs-string">&quot;POST&quot;</span><br>                connection.doOutput = <span class="hljs-literal">true</span><br>                connection.setRequestProperty(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>)             <br><span class="hljs-comment">/* 如果处理form-data：</span><br><span class="hljs-comment">connection.setRequestProperty(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW&quot;)</span><br><span class="hljs-comment">// 创建包含form-data数据的请求体</span><br><span class="hljs-comment">val multiPart = FormDataMultiPart()</span><br><span class="hljs-comment">multiPart.field(&quot;user&quot;, &quot;admin&quot;)</span><br><span class="hljs-comment">multiPart.field(&quot;password&quot;, &quot;123456&quot;)</span><br><span class="hljs-comment">// 将请求体添加到HttpURLConnection对象中</span><br><span class="hljs-comment">val outputWriter = OutputStreamWriter(connection.outputStream)</span><br><span class="hljs-comment">multiPart.writeTo(outputWriter, Charset.defaultCharset())                                */</span><br>				<span class="hljs-comment">//4.创建一个 JSONObject 对象，并向其中添加要上传的数据。</span><br>                <span class="hljs-keyword">val</span> jsonObject = JSONObject()<br>                jsonObject.put(<span class="hljs-string">&quot;user&quot;</span>, username)<br>                jsonObject.put(<span class="hljs-string">&quot;password&quot;</span>, password)<br>				<span class="hljs-comment">//5.将 JSONObject 对象转换成字符串，并写入连接对象的输出流中。</span><br>                <span class="hljs-keyword">val</span> outputWriter = OutputStreamWriter(connection.outputStream)<br>                outputWriter.write(jsonObject.toString())<br>                outputWriter.flush()<br>                outputWriter.close()<br>				<span class="hljs-comment">//6.获取服务器的响应状态码，如果状态码为 HttpURLConnection.HTTP_OK（200），则说明请求成功。</span><br>                <span class="hljs-keyword">val</span> responseCode = connection.responseCode<br>                <span class="hljs-keyword">if</span> (responseCode == HttpURLConnection.HTTP_OK) &#123;<br>                    <span class="hljs-comment">//7.从连接对象的输入流中读取服务器的响应数据，并将其转换成字符串。</span><br>                    <span class="hljs-keyword">val</span> inputStream = connection.inputStream<br>                    <span class="hljs-keyword">val</span> bufferedReader = BufferedReader(InputStreamReader(inputStream))<br>                    <span class="hljs-keyword">val</span> response = StringBuilder()<br>                    <span class="hljs-keyword">var</span> inputLine: String?<br>                    <span class="hljs-keyword">while</span> (bufferedReader.readLine().also &#123; inputLine = it &#125; != <span class="hljs-literal">null</span>) &#123;<br>                        response.append(inputLine)<br>                    &#125;<br>                    bufferedReader.close()<br>                    Log.d(<span class="hljs-string">&quot;MainActivity&quot;</span>, <span class="hljs-string">&quot;Response received: <span class="hljs-variable">$response</span>&quot;</span>)<br>                    <span class="hljs-comment">//8.将响应数据转换成 JSONObject 对象，并获取需要的数据。</span><br>                    <span class="hljs-keyword">val</span> jsonResponse = JSONObject(response.toString())<br>                    <span class="hljs-keyword">val</span> usernameExists = jsonResponse.getBoolean(<span class="hljs-string">&quot;user_exists&quot;</span>)<br>                    <span class="hljs-keyword">val</span> passwordMatches = jsonResponse.getBoolean(<span class="hljs-string">&quot;password_matches&quot;</span>)<br>                    <span class="hljs-comment">//9.根据服务器返回的数据进行相应的处理。</span><br>                    <span class="hljs-keyword">if</span> (usernameExists &amp;&amp; passwordMatches) &#123;<br>                        <span class="hljs-comment">// 账号密码正确，执行下一步操作</span><br>                        Looper.prepare();<br>                        Toast.makeText(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;登录成功&quot;</span>, Toast.LENGTH_SHORT).show() <span class="hljs-comment">//Toast不能直接在子线程中使用</span><br>                        Looper.loop();<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-comment">// 账号密码错误，给出提示信息</span><br>                        Looper.prepare();<br>                        Toast.makeText(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;登录失败&quot;</span>, Toast.LENGTH_SHORT).show()<br>                        Looper.loop();<br>                    &#125;<br>                &#125;<br>            &#125;.start()<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>注：<code>outputWriter.close()</code> 不会清空数据，作用是关闭输出流并释放资源，以确保数据被正确地发送到目标服务器。如果在写入完数据之后不关闭输出流，可能会导致数据发送不完整或丢失。关闭输出流后，连接将保持打开状态，以等待来自服务器的响应。如果需要清空数据，可以重新实例化 <code>jsonObject</code> 对象。</p>
+<p><code>connection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;)</code> ：设置HTTP请求头，设置请求的Content-Type为application&#x2F;json。告诉服务器发送的数据是JSON格式的，让服务器能够正确解析请求数据。</p>
+<p>Postman测试服务器能否正常处理JSON数据：Body-row ,设置为JSON，POST提交验证</p>
+ <img src="/2023/03/21/Android-Studio%E4%B8%AD%E9%80%9A%E8%BF%87PHP%E8%84%9A%E6%9C%AC%E5%9C%A8Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81/5.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<div class="note note-info">
+            <h5 id="附解决-Toast不能直接在子线程中使用-问题链接：——浅析Android中的消息机制"><a href="#附解决-Toast不能直接在子线程中使用-问题链接：——浅析Android中的消息机制" class="headerlink" title="附解决 Toast不能直接在子线程中使用 问题链接：——浅析Android中的消息机制"></a>附解决 Toast不能直接在子线程中使用 问题链接：——浅析Android中的消息机制</h5><p><a target="_blank" rel="noopener" href="http://t.csdn.cn/ntFKC">http://t.csdn.cn/ntFKC</a></p>
+          </div>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Android-studio/" class="category-chain-item">Android studio</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3/" class="category-chain-item">数据库相关</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Android-studio/">#Android studio</a>
+      
+        <a href="/tags/MySql/">#MySql</a>
+      
+        <a href="/tags/Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8CPHP/">#Apache服务器，PHP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android Studio中通过PHP脚本在Apache服务器验证账号密码</div>
+      <div>http://example.com/2023/03/21/Android-Studio中通过PHP脚本在Apache服务器验证账号密码/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>zhanghao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/22/Android%E5%B0%86%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E5%88%B0PHP%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87%E8%B0%83%E7%94%A8MySql%E6%95%B0%E6%8D%AE%E6%98%BE%E7%A4%BA%E5%9B%BE%E7%89%87/" title="Android将图片上传到PHP服务器，并通过调用MySql数据显示图片">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Android将图片上传到PHP服务器，并通过调用MySql数据显示图片</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/18/navicat%E8%BF%9E%E6%8E%A5MySQL%E6%8A%A5%E9%94%99%EF%BC%9A1045-Access-denied-for-user-%E2%80%98root%E2%80%98-%E2%80%98localhost%E2%80%98-using-password-NO/" title="navicat连接MySQL报错：1045 - Access denied for user ‘root‘@‘localhost‘ (using password NO)">
+                        <span class="hidden-mobile">navicat连接MySQL报错：1045 - Access denied for user ‘root‘@‘localhost‘ (using password NO)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","appKey":"V2r5I2Th3xEnM5TBRcIomfhi","path":"window.location.pathname","placeholder":null,"avatar":"hide","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://vujb9ter.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
