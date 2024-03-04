@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>更新github token</title>
+    <link href="/2024/03/04/%E6%9B%B4%E6%96%B0github-token/"/>
+    <url>/2024/03/04/%E6%9B%B4%E6%96%B0github-token/</url>
+    
+    <content type="html"><![CDATA[<p>间隔半年多来整理文档，hexo使用已经有点陌生了，记录一下token的更新。</p> <img src="/2024/03/04/%E6%9B%B4%E6%96%B0github-token/image-20240304133624513.png" class=""> <p>error：用户名密码不匹配—-token过期了</p><h2 id="1-生成GitHub-personal-token"><a href="#1-生成GitHub-personal-token" class="headerlink" title="1.生成GitHub personal token"></a>1.生成GitHub personal token</h2><p>GitHub进入settings界面–Developer settings–personal access token–generate new token</p> <img src="/2024/03/04/%E6%9B%B4%E6%96%B0github-token/image-20240304133854248.png" class=""> <h2 id="2-hexo-deploy设置"><a href="#2-hexo-deploy设置" class="headerlink" title="2.hexo deploy设置"></a>2.hexo deploy设置</h2><p>hexo文件夹，<code>_config.yml</code>文件    填写deploy模块</p> <img src="/2024/03/04/%E6%9B%B4%E6%96%B0github-token/image-20240304134057407.png" class=""> <h3 id="修改完成"><a href="#修改完成" class="headerlink" title="修改完成"></a>修改完成</h3> <img src="/2024/03/04/%E6%9B%B4%E6%96%B0github-token/image-20240304133550480.png" class=""> ]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>HOK后端项目记录</title>
     <link href="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/"/>
     <url>/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/</url>
