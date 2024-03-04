@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1A2B44">
+  <meta name="author" content="zhanghao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="后端实现记录+总结任务：  架构图 数据处理 数据库交互 大数据平台交互(后端与HDFS和Hive进行交互) 接口设计与实现 Ajax请求处理 安全性-身份验证 用例测试  1.创建项目，配置文件123# portserver.port&#x3D;8080server.servlet.context-path&#x3D;&#x2F;hok  Spring启动文件—Main.java 12345678910111213packa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HOK后端项目记录">
+<meta property="og:url" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="InMyCrown的博客">
+<meta property="og:description" content="后端实现记录+总结任务：  架构图 数据处理 数据库交互 大数据平台交互(后端与HDFS和Hive进行交互) 接口设计与实现 Ajax请求处理 安全性-身份验证 用例测试  1.创建项目，配置文件123# portserver.port&#x3D;8080server.servlet.context-path&#x3D;&#x2F;hok  Spring启动文件—Main.java 12345678910111213packa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610110253799.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610112152957.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610152645255.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610152623786.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610143120591.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610151313174.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610151741119.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610190559734.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610192314486.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610200308982.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610231215359.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610231844983.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611011137676.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610232259858.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611105826066.png">
+<meta property="og:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611111632803.png">
+<meta property="article:published_time" content="2024-03-04T04:44:33.000Z">
+<meta property="article:modified_time" content="2024-03-04T05:02:11.706Z">
+<meta property="article:author" content="zhanghao">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610110253799.png">
+  
+  
+  
+  <title>HOK后端项目记录 - InMyCrown的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","app_key":"V2r5I2Th3xEnM5TBRcIomfhi","server_url":"https://vujb9ter.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>InMyCrown</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HOK后端项目记录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-04 12:44" pubdate>
+          2024年3月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          28k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          234 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HOK后端项目记录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="后端实现记录-总结"><a href="#后端实现记录-总结" class="headerlink" title="后端实现记录+总结"></a>后端实现记录+总结</h1><p><strong>任务：</strong></p>
+<ul>
+<li>架构图</li>
+<li>数据处理</li>
+<li>数据库交互</li>
+<li>大数据平台交互(后端与HDFS和Hive进行交互)</li>
+<li>接口设计与实现</li>
+<li>Ajax请求处理</li>
+<li>安全性-身份验证</li>
+<li>用例测试</li>
+</ul>
+<h2 id="1-创建项目，配置文件"><a href="#1-创建项目，配置文件" class="headerlink" title="1.创建项目，配置文件"></a>1.创建项目，配置文件</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"># port<br>server.port=<span class="hljs-number">8080</span><br>server.servlet.context-path=/hok<br></code></pre></td></tr></table></figure>
+
+<p>Spring启动文件—Main.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;<br><span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;<br><span class="hljs-keyword">import</span> org.springframework.boot.web.servlet.ServletComponentScan;<br><br><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@ServletComponentScan</span>  <span class="hljs-comment">// 开启Servlet组件扫描</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(Main.class,args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-创建数据库，配置MySQL连接"><a href="#2-创建数据库，配置MySQL连接" class="headerlink" title="2.创建数据库，配置MySQL连接"></a>2.创建数据库，配置MySQL连接</h2><h4 id="建立数据库"><a href="#建立数据库" class="headerlink" title="建立数据库"></a>建立数据库</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE DATABASE hok;<br>USE hok;<br><br>CREATE TABLE heros (<br>                        id INT PRIMARY KEY,<br>                        name VARCHAR(50) NOT NULL,<br>                        role VARCHAR(50) NOT NULL,<br>                        type VARCHAR(50) NOT NULL,<br>                        difficulty INT NOT NULL DEFAULT 0<br>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="创建相应的实体类-Heros"><a href="#创建相应的实体类-Heros" class="headerlink" title="创建相应的实体类 Heros"></a>创建相应的实体类 Heros</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.pojo;<br><br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Heros</span> &#123;<br>    <span class="hljs-keyword">private</span> Integer id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> String role;<br>    <span class="hljs-keyword">private</span> String type;<br>    <span class="hljs-keyword">private</span> Integer difficulty;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="添加测试数据"><a href="#添加测试数据" class="headerlink" title="添加测试数据"></a>添加测试数据</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs mysql">USE hok;<br><br>INSERT INTO heros (id, name, role, type, difficulty)<br>VALUES<br>    (1, &#x27;孙悟空&#x27;, &#x27;战士&#x27;, &#x27;近战&#x27;, 3),<br>    (2, &#x27;貂蝉&#x27;, &#x27;法师&#x27;, &#x27;远程&#x27;, 2),<br>    (3, &#x27;刘备&#x27;, &#x27;辅助&#x27;, &#x27;远程&#x27;, 1),<br>    (4, &#x27;鲁班七号&#x27;, &#x27;射手&#x27;, &#x27;远程&#x27;, 2),<br>    (5, &#x27;项羽&#x27;, &#x27;坦克&#x27;, &#x27;近战&#x27;, 3),<br>    (6, &#x27;嬴政&#x27;, &#x27;法师&#x27;, &#x27;远程&#x27;, 3),<br>    (7, &#x27;花木兰&#x27;, &#x27;战士&#x27;, &#x27;近战&#x27;, 2),<br>    (8, &#x27;程咬金&#x27;, &#x27;坦克&#x27;, &#x27;近战&#x27;, 1),<br>    (9, &#x27;李白&#x27;, &#x27;刺客&#x27;, &#x27;近战&#x27;, 3),<br>    (10, &#x27;百里守约&#x27;, &#x27;射手&#x27;, &#x27;远程&#x27;, 2);<br></code></pre></td></tr></table></figure>
+
+<h3 id="MySQL的配置"><a href="#MySQL的配置" class="headerlink" title="MySQL的配置"></a>MySQL的配置</h3><h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># MYSQL</span><br><span class="hljs-attr">datasource.dbs.mysql.type</span>=<span class="hljs-string">com.alibaba.druid.pool.DruidDataSource</span><br><span class="hljs-attr">datasource.dbs.mysql.driver-class-name</span>=<span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br><span class="hljs-attr">datasource.dbs.mysql.url</span>=<span class="hljs-string">jdbc:mysql://localhost:3306/hok?useUnicode=true&amp;characterEncoding=utf8</span><br><span class="hljs-attr">datasource.dbs.mysql.username</span>=<span class="hljs-string">root</span><br><span class="hljs-attr">datasource.dbs.mysql.password</span>=<span class="hljs-string">123456</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="数据源的配置"><a href="#数据源的配置" class="headerlink" title="数据源的配置"></a>数据源的配置</h5><h6 id="配置文件-MySQLConf"><a href="#配置文件-MySQLConf" class="headerlink" title="配置文件 MySQLConf"></a>配置文件 MySQLConf</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><br><span class="hljs-keyword">import</span> com.alibaba.druid.pool.DruidDataSource;<br><span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;<br><span class="hljs-keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;<br><span class="hljs-keyword">import</span> org.mybatis.spring.SqlSessionTemplate;<br><span class="hljs-keyword">import</span> org.mybatis.spring.annotation.MapperScan;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.EnableConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-keyword">import</span> javax.sql.DataSource;<br><br><span class="hljs-comment">// MySQL 数据源的配置</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@MapperScan(basePackages = &quot;hokdata.dao.mysql&quot;, sqlSessionFactoryRef = &quot;mysqlSqlSessionFactory&quot;)</span><br><span class="hljs-meta">@EnableConfigurationProperties(DataSourceProperties.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MySQLConf</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DataSourceProperties dataSourceProperties;<br><br>    <span class="hljs-comment">// 创建DataSource对象</span><br>    <span class="hljs-meta">@Bean(&quot;mysqlDataSource&quot;)</span><br>    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">getMySQLDataSource</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-comment">// 创建数据源对象</span><br>        <span class="hljs-type">DruidDataSource</span> <span class="hljs-variable">dataSource</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DruidDataSource</span>();<br><br>        dataSource.setDriverClassName(dataSourceProperties.getMysql().get(<span class="hljs-string">&quot;driver-class-name&quot;</span>));<br>        dataSource.setUrl(dataSourceProperties.getMysql().get(<span class="hljs-string">&quot;url&quot;</span>));<br>        dataSource.setUsername(dataSourceProperties.getMysql().get(<span class="hljs-string">&quot;username&quot;</span>));<br>        dataSource.setPassword(dataSourceProperties.getMysql().get(<span class="hljs-string">&quot;password&quot;</span>));<br><br>        <span class="hljs-keyword">return</span> dataSource;<br>    &#125;<br><br>    <span class="hljs-meta">@Bean(&quot;mysqlSqlSessionFactory&quot;)</span><br>    <span class="hljs-keyword">public</span> SqlSessionFactory <span class="hljs-title function_">getMySQLFactory</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;mysqlDataSource&quot;)</span> DataSource dataSource)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 创建SqlSessionFactory对象</span><br>        <span class="hljs-type">SqlSessionFactoryBean</span> <span class="hljs-variable">bean</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBean</span>();<br>        <span class="hljs-comment">// SqlSessionFactoryBean对象指定数据源</span><br>        bean.setDataSource(dataSource);<br>        <span class="hljs-keyword">return</span> bean.getObject();<br>    &#125;<br><br>    <span class="hljs-comment">// 每次执行SQL操作时，都会创建一个SqlSessionTemplate对象</span><br>    <span class="hljs-meta">@Bean(&quot;mysqlSqlSession&quot;)</span><br>    <span class="hljs-keyword">public</span> SqlSessionTemplate <span class="hljs-title function_">mysqlSession</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;mysqlSqlSessionFactory&quot;)</span> SqlSessionFactory factory)</span>&#123;<br>        <span class="hljs-type">SqlSessionTemplate</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionTemplate</span>(factory);<br>        <span class="hljs-keyword">return</span> template;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="配置文件-DataSourceProperties"><a href="#配置文件-DataSourceProperties" class="headerlink" title="配置文件 DataSourceProperties"></a>配置文件 DataSourceProperties</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = DataSourceProperties.DS,ignoreUnknownFields = false)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> &#123;<br>    <span class="hljs-comment">// 关于数据源配置的前缀</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;datasource.dbs&quot;</span>;<br>    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; mysql;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-分层架构-实现一个简单的数据查询，测试连接"><a href="#3-分层架构-实现一个简单的数据查询，测试连接" class="headerlink" title="3.分层架构  | 实现一个简单的数据查询，测试连接"></a>3.分层架构  | 实现一个简单的数据查询，测试连接</h2><h4 id="Dao层（数据访问层）"><a href="#Dao层（数据访问层）" class="headerlink" title="Dao层（数据访问层）"></a>Dao层（数据访问层）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.dao.mysql;<br><br><span class="hljs-keyword">import</span> hokdata.pojo.Heros;<br><span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Mapper;<br><span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Select;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">HerosDao</span> &#123;<br>    <span class="hljs-meta">@Select(&quot;SELECT * from heros&quot;)</span><br>    List&lt;Heros&gt; <span class="hljs-title function_">list</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Service层（业务逻辑层）"><a href="#Service层（业务逻辑层）" class="headerlink" title="Service层（业务逻辑层）"></a>Service层（业务逻辑层）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.service;<br><br><span class="hljs-keyword">import</span> hokdata.dao.mysql.HerosDao;<br><span class="hljs-keyword">import</span> hokdata.pojo.Heros;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HerosService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> HerosDao herosDao;<br>    <span class="hljs-keyword">public</span> List&lt;Heros&gt; <span class="hljs-title function_">getHeros</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> herosDao.listHeros();<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Web层-表示层"><a href="#Web层-表示层" class="headerlink" title="Web层  (表示层)"></a>Web层  (表示层)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.web;<br><br><br><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;<br><span class="hljs-keyword">import</span> hokdata.pojo.Heros;<br><span class="hljs-keyword">import</span> hokdata.service.HerosService;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/heros&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HerosWeb</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> HerosService herosService;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;/form1&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">listHeros</span><span class="hljs-params">()</span>&#123;<br>        List&lt;Heros&gt; herosList = herosService.getHeros();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">heroStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(herosList);<br>        <span class="hljs-keyword">return</span> heroStr;<br>    &#125;<br>    <span class="hljs-meta">@RequestMapping(&quot;/form2&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">listHeros1</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;1&quot;</span>;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="结果测试"><a href="#结果测试" class="headerlink" title="结果测试"></a>结果测试</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610110253799.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h2 id="4-Hive配置和测试"><a href="#4-Hive配置和测试" class="headerlink" title="4.Hive配置和测试"></a>4.Hive配置和测试</h2><h4 id="1-IDEA和数据库的连接"><a href="#1-IDEA和数据库的连接" class="headerlink" title="1. IDEA和数据库的连接"></a>1. IDEA和数据库的连接</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610112152957.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h4 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h4><h6 id="DataSourceProperties"><a href="#DataSourceProperties" class="headerlink" title="DataSourceProperties"></a>DataSourceProperties</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = DataSourceProperties.DS,ignoreUnknownFields = false)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> &#123;<br>    <span class="hljs-comment">// 关于数据源配置的前缀</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;datasource.dbs&quot;</span>;<br>    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; mysql;<br>    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; hive;    <span class="hljs-comment">//  加入这行</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="HDFSConf"><a href="#HDFSConf" class="headerlink" title="HDFSConf"></a>HDFSConf</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><br><br><span class="hljs-keyword">import</span> org.apache.hadoop.fs.FileSystem;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Value;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.net.URI;<br><span class="hljs-keyword">import</span> java.net.URISyntaxException;<br><br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HDFSconf</span> &#123;<br>    <span class="hljs-meta">@Value(&quot;$&#123;hdfs.replication&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String replication;<br>    <span class="hljs-meta">@Value(&quot;$&#123;hdfs.user&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String user;<br>    <span class="hljs-meta">@Value(&quot;$&#123;hdfs.uri&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String uri;<br><br>    <span class="hljs-keyword">public</span> org.apache.hadoop.conf.Configuration <span class="hljs-title function_">getConf</span><span class="hljs-params">()</span>&#123;<br>        org.apache.hadoop.conf.<span class="hljs-type">Configuration</span> <span class="hljs-variable">conf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">org</span>.apache.hadoop.conf.Configuration();<br>        conf.set(<span class="hljs-string">&quot;dfs.replication&quot;</span>,replication);<br>        <span class="hljs-keyword">return</span> conf;<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> FileSystem <span class="hljs-title function_">getFS</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-type">FileSystem</span> <span class="hljs-variable">fs</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            fs = FileSystem.get(<span class="hljs-keyword">new</span> <span class="hljs-title class_">URI</span>(uri),getConf(),user);<br>        &#125; <span class="hljs-keyword">catch</span> (URISyntaxException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> fs;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="HiveConf"><a href="#HiveConf" class="headerlink" title="HiveConf"></a>HiveConf</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><br><br><span class="hljs-keyword">import</span> com.alibaba.druid.pool.DruidDataSource;<br><span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;<br><span class="hljs-keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;<br><span class="hljs-keyword">import</span> org.mybatis.spring.SqlSessionTemplate;<br><span class="hljs-keyword">import</span> org.mybatis.spring.annotation.MapperScan;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.EnableConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-keyword">import</span> javax.sql.DataSource;<br><br><span class="hljs-comment">// Hive 数据源的配置</span><br><span class="hljs-meta">@Configuration</span><br><br><span class="hljs-meta">@MapperScan(basePackages = &quot;hokdata.dao.hive&quot;, sqlSessionFactoryRef = &quot;hiveSqlSessionFactory&quot;)</span><br><span class="hljs-meta">@EnableConfigurationProperties(DataSourceProperties.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HiveConf</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DataSourceProperties dataSourceProperties;<br><br>    <span class="hljs-comment">// 创建DataSources对象</span><br>    <span class="hljs-meta">@Bean(&quot;hiveDataSource&quot;)</span><br>    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">getHiveDataSource</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-comment">//  创建数据源对象</span><br>        DruidDataSource dataSource=<span class="hljs-keyword">new</span> <span class="hljs-title class_">DruidDataSource</span>();<br><br>        dataSource.setDriverClassName(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;driver-class-name&quot;</span>));<br>        dataSource.setUrl(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;url&quot;</span>));<br>        dataSource.setUsername(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;username&quot;</span>));<br>        dataSource.setPassword(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;password&quot;</span>));<br><br>        <span class="hljs-keyword">return</span> dataSource;<br>    &#125;<br><br>    <span class="hljs-meta">@Bean(&quot;hiveSqlSessionFactory&quot;)</span><br>    <span class="hljs-keyword">public</span> SqlSessionFactory <span class="hljs-title function_">getHiveFactory</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;hiveDataSource&quot;)</span> DataSource dataSource)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-type">SqlSessionFactoryBean</span> <span class="hljs-variable">bean</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBean</span>();<br>        bean.setDataSource(dataSource);<br><br>        <span class="hljs-keyword">return</span> bean.getObject();<br>    &#125;<br><br>    <span class="hljs-meta">@Bean(&quot;hiveSqlSession&quot;)</span><br>    <span class="hljs-keyword">public</span> SqlSessionTemplate <span class="hljs-title function_">hiveSession</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;hiveSqlSessionFactory&quot;)</span> SqlSessionFactory factory)</span>&#123;<br>        <span class="hljs-type">SqlSessionTemplate</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionTemplate</span>(factory);<br>        <span class="hljs-keyword">return</span> template;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-实体类HeroScore"><a href="#3-实体类HeroScore" class="headerlink" title="3.  实体类HeroScore"></a>3.  实体类HeroScore</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.pojo;<br><br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeroScore</span> &#123;<br>    <span class="hljs-keyword">private</span> Integer id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> String areaS;<br>    <span class="hljs-keyword">private</span> String scoreS;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-Dao层"><a href="#4-Dao层" class="headerlink" title="4. Dao层"></a>4. Dao层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.dao.hive;<br><br><span class="hljs-keyword">import</span> hokdata.pojo.HeroScore;<br><span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Mapper;<br><span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Select;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">HeroScoreDao</span> &#123;<br>    <span class="hljs-meta">@Select(&quot;SELECT * from heroScore&quot;)</span><br>    List&lt;HeroScore&gt; <span class="hljs-title function_">listHeroScore</span><span class="hljs-params">()</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-Web层"><a href="#5-Web层" class="headerlink" title="5. Web层"></a>5. Web层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.web;<br><br><br><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;<br><span class="hljs-keyword">import</span> hokdata.dao.hive.HeroScoreDao;<br><span class="hljs-keyword">import</span> hokdata.pojo.HeroScore;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/heros&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">heroScoreWeb</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> HeroScoreDao dao;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;score&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getHeroScore</span><span class="hljs-params">()</span>&#123;<br>        List&lt;HeroScore&gt; scoreList = dao.listHeroScore();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">strScore</span> <span class="hljs-operator">=</span> JSON.toJSONString(scoreList);<br>        <span class="hljs-keyword">return</span> strScore;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="6-结果测试"><a href="#6-结果测试" class="headerlink" title="6.结果测试"></a>6.结果测试</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610152645255.png" srcset="/img/loading.gif" lazyload class=""> 
+
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610152623786.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h4 id="7-问题1：Hive上传JSON数据报错"><a href="#7-问题1：Hive上传JSON数据报错" class="headerlink" title="7.问题1：Hive上传JSON数据报错"></a>7.问题1：Hive上传JSON数据报错</h4><h5 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE hok;<br><br>USE hok;<br><span class="hljs-comment">-- 创建数据库</span><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> heroScore;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> heroScore (<br>    id <span class="hljs-type">INT</span>,<br>    name STRING,<br>    area STRING,<br>    score <span class="hljs-type">INT</span><br>)<span class="hljs-type">ROW</span> FORMAT SERDE <span class="hljs-string">&#x27;org.apache.hadoop.hive.serde2.JsonSerDe&#x27;</span><br>    STORED <span class="hljs-keyword">AS</span> TEXTFILE;<br></code></pre></td></tr></table></figure>
+
+<p>官方文档说明：</p>
+<p><code>Starting in Hive 3.0.0, JsonSerDe is added to Hive Serde as “org.apache.hadoop.hive.serde2.JsonSerDe” (HIVE-19211).</code>  <strong>———-通过此可以对建表语句进行设置，自动解析json数据</strong></p>
+<p>&#x3D;&#x3D;没找到相应的应用实例，误以为要传.json文件格式；测试了很久发现都报错：JSON数据类型错误&#x3D;&#x3D;</p>
+<h6 id="IDEA里报错"><a href="#IDEA里报错" class="headerlink" title="IDEA里报错"></a>IDEA里报错</h6><p><code>java.io.IOException: org.apache.hadoop.hive.serde2.SerDeException: java.io.IOException: Start token not found where expected</code></p>
+<h6 id="beeline里显示的错误"><a href="#beeline里显示的错误" class="headerlink" title="beeline里显示的错误"></a>beeline里显示的错误</h6> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610143120591.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h6 id="解决—–传txt文件"><a href="#解决—–传txt文件" class="headerlink" title="解决—–传txt文件"></a>解决—–传txt文件</h6><p>&#x3D;&#x3D;<strong>多次测试还是失败</strong>&#x3D;&#x3D;</p>
+<h5 id="原因：json数据格式的问题"><a href="#原因：json数据格式的问题" class="headerlink" title="原因：json数据格式的问题"></a>原因：json数据格式的问题</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs json"># 错误案例：<br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;hero&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;李白&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;江苏&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10000</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;程咬金&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;湖南&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9000</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;貂蝉&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;广东&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9500</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;鲁班七号&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;浙江&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9200</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;王昭君&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;江苏&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9800</span><br>      <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"># 可以识别的形式：<br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;李白&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;江苏&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10000</span><span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;程咬金&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;湖南&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9000</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;hive解析数据时，是一行一行解析，所以一组JSON数据应该在一行里，不能分段&#x3D;&#x3D;</p>
+<h4 id="8-问题2：Hive解析数据的原理"><a href="#8-问题2：Hive解析数据的原理" class="headerlink" title="8.问题2：Hive解析数据的原理"></a>8.问题2：Hive解析数据的原理</h4><h6 id="发现："><a href="#发现：" class="headerlink" title="发现："></a>发现：</h6><p>文件上传到HDFS后，再通过LOAD DATA传到hive解析，原文件就没了，应该是移动操作，但是这样把文件移到hive中，此时<strong>受影响行</strong>为0，是在输出的时候才能显示数据，并且再次传入文件，数据是可以正常增加内容显示的。那么—<strong>底层是文件数据拼接处理，每次用的时候加载进去；还是解析完文件就自动删除了，再传文件时再传输数据。</strong></p>
+<h6 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h6><p>当使用LOAD DATA命令将文件加载到Hive表时，Hive会在内部将文件从HDFS<strong>移动</strong>到表所在的存储位置。这意味着原始文件会被移动并在HDFS中的源位置被删除。</p>
+<p>Hive并不会直接在加载数据时对原始文件进行拼接操作。当再次传入新的文件时，Hive会<strong>将新文件移动到表的存储位置</strong>，并将新数据与现有数据合并。在查询表时，会看到合并后的数据。</p>
+<p>同时，Hive<strong>不会</strong>在加载数据后<strong>自动删除</strong>原始文件。删除原始文件可以手动在HDFS上操作。</p>
+<h4 id="9-问题3：Druid数据源配置中启用了testWhileIdle选项，但没有设置validationQuery属性"><a href="#9-问题3：Druid数据源配置中启用了testWhileIdle选项，但没有设置validationQuery属性" class="headerlink" title="9.问题3：Druid数据源配置中启用了testWhileIdle选项，但没有设置validationQuery属性"></a>9.问题3：Druid数据源配置中启用了<code>testWhileIdle</code>选项，但没有设置<code>validationQuery</code>属性</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610151313174.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<p><code>ERROR 32060 --- [nio-8080-exec-1] com.alibaba.druid.pool.DruidDataSource   : testWhileIdle is true, validationQuery not set</code></p>
+<p><strong>原因：</strong>在Druid数据源配置中启用了<code>testWhileIdle</code>选项，但没有设置<code>validationQuery</code>属性。</p>
+<p><code>testWhileIdle</code>选项用于指定在连接空闲时是否进行连接有效性的测试。如果启用了此选项，连接池将定期检查空闲连接的有效性。</p>
+<p>为了进行有效性测试，需要提供一个<code>validationQuery</code>，该查询语句将在连接上执行以验证连接是否有效。</p>
+<p><strong>解决：</strong>在Druid数据源配置中设置<code>validationQuery</code>属性，以提供用于连接有效性测试的SQL查询。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlCopy codespring.datasource.druid.testWhileIdle<span class="hljs-operator">=</span><span class="hljs-literal">true</span><br>spring.datasource.druid.validationQuery<span class="hljs-operator">=</span><span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p><code>validationQuery</code>设置为<code>SELECT 1</code>，表示使用简单的SQL查询来测试连接的有效性。</p>
+<p>下面是查询到的一个解决方法<del>，但是实际使用失败</del></p>
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610151741119.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<p><del><strong>不影响结果，暂时没有解决。</strong></del></p>
+<p><strong>已解决：</strong></p>
+<h6 id="项目配置文件-application-properties"><a href="#项目配置文件-application-properties" class="headerlink" title="项目配置文件 application.properties"></a>项目配置文件 application.properties</h6><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># MYSQL</span><br><span class="hljs-attr">datasource.dbs.mysql.validationQuery</span>=<span class="hljs-string">SELECT 1</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># HIVE</span><br><span class="hljs-attr">datasource.dbs.hive.validationQuery</span>=<span class="hljs-string">SELECT 1</span><br></code></pre></td></tr></table></figure>
+
+<h6 id="Hive-数据源的配置添加该数据"><a href="#Hive-数据源的配置添加该数据" class="headerlink" title="Hive 数据源的配置添加该数据"></a>Hive 数据源的配置添加该数据</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 创建DataSources对象</span><br><span class="hljs-meta">@Bean(&quot;hiveDataSource&quot;)</span><br><span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">getHiveDataSource</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-comment">//  创建数据源对象</span><br>    DruidDataSource dataSource=<span class="hljs-keyword">new</span> <span class="hljs-title class_">DruidDataSource</span>();<br><br>    dataSource.setDriverClassName(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;driver-class-name&quot;</span>));<br>    dataSource.setUrl(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;url&quot;</span>));<br>    dataSource.setUsername(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;username&quot;</span>));<br>    dataSource.setPassword(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;password&quot;</span>));<br>    dataSource.setValidationQuery(dataSourceProperties.getHive().get(<span class="hljs-string">&quot;validationQuery&quot;</span>));  <span class="hljs-comment">// 该行</span><br><br>    <span class="hljs-keyword">return</span> dataSource;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="10-问题4：JSON数据传输类型不匹配"><a href="#10-问题4：JSON数据传输类型不匹配" class="headerlink" title="10.问题4：JSON数据传输类型不匹配"></a>10.问题4：JSON数据传输类型不匹配</h4><p>JSON数据传输，每个字段都必须有，并且数据类型一一对应 [ <strong>爬取的数据，值都为” “包含，所以都改为String类型</strong> ]</p>
+<p><strong>类型不匹配&#x2F;字段不匹配</strong> 都会报错：</p>
+<p><code>Error: java.io.IOException: org.apache.hadoop.hive.serde2.SerDeException: org.codehaus.jackson.JsonParseException: Current token (VALUE_STRING) not numeric, can not use numeric value accessors at [Source: java.io.ByteArrayInputStream@759f0d70; line: 1, column: 74] (state=,code=0)</code></p>
+<p>&#x3D;&#x3D;<em>Tip:加载数据之前，可以使用 <code>CAST</code> 函数将相应字符串类型的字段转换为 INT 类型；但是用的是hive数据文件导入形式，不能用函数；</em>&#x3D;&#x3D;</p>
+<p><strong>解决：</strong></p>
+<ol>
+<li><h6 id="修改数据库内容，使类型都为String，字段和JSON相匹配；同时进行数据清理，脏数据重复并且数据量不多，把出现错误的数据使用txt查找-修改功能整理后，导入成功。"><a href="#修改数据库内容，使类型都为String，字段和JSON相匹配；同时进行数据清理，脏数据重复并且数据量不多，把出现错误的数据使用txt查找-修改功能整理后，导入成功。" class="headerlink" title="修改数据库内容，使类型都为String，字段和JSON相匹配；同时进行数据清理，脏数据重复并且数据量不多，把出现错误的数据使用txt查找-修改功能整理后，导入成功。"></a>修改数据库内容，使类型都为String，字段和JSON相匹配；同时进行数据清理，脏数据重复并且数据量不多，把出现错误的数据使用txt查找-修改功能整理后，导入成功。</h6></li>
+</ol>
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610190559734.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h6 id="2-最后实体类的时候类型改回相应的数据类型即可，如Integer"><a href="#2-最后实体类的时候类型改回相应的数据类型即可，如Integer" class="headerlink" title="2.最后实体类的时候类型改回相应的数据类型即可，如Integer"></a>2.最后实体类的时候类型改回相应的数据类型即可，如Integer</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.pojo;<br><br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HerosScore</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> String alias;<br>    <span class="hljs-keyword">private</span> String area;<br>    <span class="hljs-keyword">private</span> Integer areaPower;<br>    <span class="hljs-keyword">private</span> String city;<br>    <span class="hljs-keyword">private</span> Integer cityPower;<br>    <span class="hljs-keyword">private</span> String province;<br>    <span class="hljs-keyword">private</span> Integer provincePower;<br>    <span class="hljs-keyword">private</span> String platform;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> stamp;<br>    <span class="hljs-keyword">private</span> String updatetime;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-结果验证"><a href="#3-结果验证" class="headerlink" title="3.结果验证"></a>3.结果验证</h6> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610192314486.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h4 id="11-补：hive无字段自增"><a href="#11-补：hive无字段自增" class="headerlink" title="11.补：hive无字段自增"></a>11.补：hive无字段自增</h4><p>默认情况下，表的字段不支持自增功能。Hive 是建立在 Hadoop 之上的数据仓库解决方案，主要用于大规模数据的存储和分析，而不是作为一个传统的关系型数据库。</p>
+<p>在 Hive 中实现自增功能，可行的有两种方法：</p>
+<ol>
+<li>使用外部工具或编程语言：在数据加载到 Hive 表之前，使用外部工具或编程语言生成自增的值，并将其插入到 Hive 表中。</li>
+<li>使用序列生成器：Hive 提供了序列生成器的功能，可以用于生成递增的序列值创建一个序列生成器，并在插入数据时使用该序列生成器生成自增的值。<strong>但是，序列生成器是全局的，而不是针对每个表的独立自增。因此，如果多个表需要使用自增功能，它们将共享同一个序列生成器。</strong></li>
+</ol>
+<p>&#x3D;&#x3D;以上两种方法都是通过外部手段实现自增功能，而不是 Hive 自身的内置功能。&#x3D;&#x3D;</p>
+<h2 id="补充：传JSON数据给Hive的流程总结"><a href="#补充：传JSON数据给Hive的流程总结" class="headerlink" title="补充：传JSON数据给Hive的流程总结"></a>补充：传JSON数据给Hive的流程总结</h2><p>1.编写txt文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;李白&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;江苏&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10000</span><span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;程咬金&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;湖南&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9000</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>2.xftp传到虚拟机</p>
+<p>3.上传到HDFS</p>
+<p><code>hdfs dfs -put /data/data.txt /user/root/</code></p>
+<p>4.LOAD DATA给hive表格(需要设置自动解析)</p>
+<p> <code>LOAD DATA INPATH &#39;/user/root/data4.txt&#39; INTO TABLE heroScore;</code></p>
+<h2 id="5-前端测试用例"><a href="#5-前端测试用例" class="headerlink" title="5. 前端测试用例"></a>5. 前端测试用例</h2><h4 id="1-Ajax请求"><a href="#1-Ajax请求" class="headerlink" title="1.Ajax请求"></a>1.Ajax请求</h4><h5 id="导入js文件"><a href="#导入js文件" class="headerlink" title="导入js文件"></a>导入js文件</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span> src=<span class="hljs-string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<h5 id="发送GET请求测试"><a href="#发送GET请求测试" class="headerlink" title="发送GET请求测试"></a>发送GET请求测试</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java">$.ajax(&#123;<br>    url: <span class="hljs-string">&#x27;http://192.168.61.21:8080/hok/heros/score2&#x27;</span>,<br>    type: <span class="hljs-string">&#x27;GET&#x27;</span>,<br>    dataType: <span class="hljs-string">&#x27;json&#x27;</span>,<br>    success: function(response) &#123;<br>        <span class="hljs-comment">// 处理返回的数据</span><br>        <span class="hljs-keyword">if</span> (Array.isArray(response)) &#123;<br>            <span class="hljs-comment">// 如果返回的是数组</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">var</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; response.length; i++) &#123;<br>                <span class="hljs-type">var</span> <span class="hljs-variable">item</span> <span class="hljs-operator">=</span> response[i];<br>                console.log(<span class="hljs-string">&quot;Name: &quot;</span> + item.name);<br>                console.log(<span class="hljs-string">&quot;Area: &quot;</span> + item.area);<br>                console.log(<span class="hljs-string">&quot;Area Power: &quot;</span> + item.areaPower);<br>                console.log(<span class="hljs-string">&quot;--------------------&quot;</span>);<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">// 如果返回的是单个对象</span><br>            console.log(<span class="hljs-string">&quot;Name: &quot;</span> + response.name);<br>            console.log(<span class="hljs-string">&quot;Area: &quot;</span> + response.area);<br>            console.log(<span class="hljs-string">&quot;Area Power: &quot;</span> + response.areaPower);<br>        &#125;<br>    &#125;,<br>    error: function() &#123;<br>        <span class="hljs-comment">// 处理错误情况</span><br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-控制台打印"><a href="#2-控制台打印" class="headerlink" title="2.控制台打印"></a>2.控制台打印</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610200308982.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+
+<h2 id="6-给前端传数据的跨域问题"><a href="#6-给前端传数据的跨域问题" class="headerlink" title="6.给前端传数据的跨域问题"></a>6.给前端传数据的跨域问题</h2><p>&#x3D;&#x3D;封装后端的数据，直接把结果返回即可，使前端通过Ajax请求直接访问url获取数据&#x3D;&#x3D;</p>
+<h4 id="1-思路一，之前配置过Apache服务器，局域网内可以直接访问"><a href="#1-思路一，之前配置过Apache服务器，局域网内可以直接访问" class="headerlink" title="1.思路一，之前配置过Apache服务器，局域网内可以直接访问"></a>1.思路一，之前配置过Apache服务器，局域网内可以直接访问</h4> <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610231215359.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<p>将文件存储在这边，然后通过访问服务器网址来获得JSON数据；</p>
+<h3 id="2-改进—-gt-使用反向代理，将80端口映射到8080端口，直接访问Tomcat服务器"><a href="#2-改进—-gt-使用反向代理，将80端口映射到8080端口，直接访问Tomcat服务器" class="headerlink" title="2.改进—&gt;使用反向代理，将80端口映射到8080端口，直接访问Tomcat服务器"></a>2.改进—&gt;使用反向代理，将80端口映射到8080端口，直接访问Tomcat服务器</h3><h5 id="1-httpd-conf配置文件中加载模块"><a href="#1-httpd-conf配置文件中加载模块" class="headerlink" title="1.httpd.conf配置文件中加载模块"></a>1.httpd.conf配置文件中加载模块</h5><p><code>LoadModule proxy_module modules/mod_proxy.so</code></p>
+<p><code>LoadModule proxy_http_module modules/mod_proxy_http.so</code></p>
+<h5 id="2-开放配置文件"><a href="#2-开放配置文件" class="headerlink" title="2.开放配置文件"></a>2.开放配置文件</h5><p><code>Include conf/extra/httpd-vhosts.conf</code></p>
+<h5 id="3-httpd-vhosts-conf中添加具体配置"><a href="#3-httpd-vhosts-conf中添加具体配置" class="headerlink" title="3.httpd-vhosts.conf中添加具体配置"></a>3.httpd-vhosts.conf中添加具体配置</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;VirtualHost _default_:<span class="hljs-number">80</span>&gt;`<br>`#ServerName www.example.com:<span class="hljs-number">80</span>`<br>`DocumentRoot <span class="hljs-string">&quot;$&#123;SRVROOT&#125;/htdocs&quot;</span>`<br>`&lt;/VirtualHost&gt;<br><br>    <br>#  增加后的配置<br><br>&lt;VirtualHost _default_:<span class="hljs-number">80</span>&gt;<br>DocumentRoot <span class="hljs-string">&quot;$&#123;SRVROOT&#125;/htdocs&quot;</span><br>#ServerName www.example.com:<span class="hljs-number">80</span><br>ServerName www.example.com<br><br>ProxyRequests Off<br>ProxyPass /api http:<span class="hljs-comment">//localhost:8080</span><br>ProxyPassReverse /api http:<span class="hljs-comment">//localhost:8080</span><br>&lt;/VirtualHost&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-Tomcat也是服务器—-gt-直接开放8080端口供外网访问"><a href="#3-Tomcat也是服务器—-gt-直接开放8080端口供外网访问" class="headerlink" title="3.Tomcat也是服务器—&gt;直接开放8080端口供外网访问"></a>3.Tomcat也是服务器—&gt;直接开放8080端口供外网访问</h3><p><strong>配置进站规则即可</strong></p>
+<p>&#x3D;&#x3D;即：设置Win10防火墙规则，使得局域网能访问此电脑的Tomcat服务&#x3D;&#x3D;</p>
+<hr>
+<p><strong>至此，可以通过局域网直接访问JSON数据</strong></p>
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610231844983.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h5 id="发送AJAS请求时会出现错误"><a href="#发送AJAS请求时会出现错误" class="headerlink" title="发送AJAS请求时会出现错误"></a>发送AJAS请求时会出现错误</h5><p><code>Access to XMLHttpRequest at &#39;http://172.19.41.181:8080/hok/heros/score2&#39; from origin &#39;http://localhost:63342&#39; has been blocked by CORS policy: No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource.</code></p>
+<p>&#x3D;&#x3D;即CORS（跨域资源共享）错误。&#x3D;&#x3D;</p>
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611011137676.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<h3 id="4-CORS（跨域资源共享）"><a href="#4-CORS（跨域资源共享）" class="headerlink" title="4.CORS（跨域资源共享）"></a>4.CORS（跨域资源共享）</h3><p><strong>这是浏览器的安全策略，用于阻止跨域请求，从一个源发出的请求访问另一个源的资源。</strong></p>
+<p>如果是本机，是同一个源下，可以正常访问，如下</p>
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230610232259858.png" srcset="/img/loading.gif" lazyload class=""> 
+
+<p><strong>TIP:[即如果直接打开HTML，不走服务器，就不属于同一个源，直接打开是通过<code>http://localhost:63342</code>进行跨域请求访问，所以不能获得数据]</strong></p>
+<h5 id="非服务器端要想获得数据，有两种解决"><a href="#非服务器端要想获得数据，有两种解决" class="headerlink" title="非服务器端要想获得数据，有两种解决"></a>非服务器端要想获得数据，有两种解决</h5><ol>
+<li><h6 id="代理服务器：在本地开发环境中，设置一个代理服务器来解决跨域问题。代理服务器接收请求，然后转发到目标服务器上，以此绕过浏览器的跨域限制。"><a href="#代理服务器：在本地开发环境中，设置一个代理服务器来解决跨域问题。代理服务器接收请求，然后转发到目标服务器上，以此绕过浏览器的跨域限制。" class="headerlink" title="代理服务器：在本地开发环境中，设置一个代理服务器来解决跨域问题。代理服务器接收请求，然后转发到目标服务器上，以此绕过浏览器的跨域限制。"></a>代理服务器：在本地开发环境中，设置一个代理服务器来解决跨域问题。代理服务器接收请求，然后转发到目标服务器上，以此绕过浏览器的跨域限制。</h6><ul>
+<li>将AJAX请求发送到代理服务器的地址，然后代理服务器会将请求转发到<code>http://172.19.12.1:8080/hok/heros/score2</code>上，将响应返回给前端。</li>
+</ul>
+</li>
+<li><h6 id="启用CORS：如果你访问目标服务器（http-172-19-12-1-8080），就可以在服务器端启用CORS，允许来自不同域的请求访问资源。"><a href="#启用CORS：如果你访问目标服务器（http-172-19-12-1-8080），就可以在服务器端启用CORS，允许来自不同域的请求访问资源。" class="headerlink" title="启用CORS：如果你访问目标服务器（http://172.19.12.1:8080），就可以在服务器端启用CORS，允许来自不同域的请求访问资源。"></a>启用CORS：如果你访问目标服务器（<code>http://172.19.12.1:8080</code>），就可以在服务器端启用CORS，允许来自不同域的请求访问资源。</h6><ul>
+<li><p>Spring Boot中，使用<code>@CrossOrigin</code>注解或配置<code>CorsFilter</code>来启用CORS。</p>
+</li>
+<li><p>@CrossOrigin()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@CrossOrigin(value = &quot;http://localhost:****&quot;)</span><br><span class="hljs-meta">@GetMapping(&quot;index&quot;)</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">gindex</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;get;&quot;</span>;<br>&#125;<br>    <br><span class="hljs-meta">@CrossOrigin(value = &quot;http://localhost:****&quot;)</span><br><span class="hljs-meta">@PostMapping(&quot;index&quot;)</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">pindex</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;post;&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>表示该接口开启了跨域，允许<code>http://localhost:****</code>进行访问</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="5-最终使用—Tomcat开放端口-Config配置文件-解决跨域问题"><a href="#5-最终使用—Tomcat开放端口-Config配置文件-解决跨域问题" class="headerlink" title="5.最终使用—Tomcat开放端口+Config配置文件 解决跨域问题"></a>5.最终使用—Tomcat开放端口+<strong>Config配置文件 解决跨域问题</strong></h4><p><strong>将整个项目配置为开启跨域</strong></p>
+<p>在config包下面新建一个CorsConfig文件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.conf;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.CorsRegistry;<br><span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span>  <span class="hljs-title class_">CrosConf</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addCorsMappings</span><span class="hljs-params">(CorsRegistry registry)</span> &#123;<br>        <span class="hljs-comment">// 所有请求都会处理跨域</span><br>        registry.addMapping(<span class="hljs-string">&quot;/**&quot;</span>)<br>                <span class="hljs-comment">// 允许谁访问</span><br>                .allowedOrigins(<span class="hljs-string">&quot;*&quot;</span>)<br>                <span class="hljs-comment">// 允许通过的请求数</span><br>                .allowedMethods(<span class="hljs-string">&quot;*&quot;</span>)<br>                <span class="hljs-comment">// 允许的请求头</span><br>                .allowedHeaders(<span class="hljs-string">&quot;*&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样就可以通过<a href="http://localhost:63342或者其他http://****直接访问了">http://localhost:63342或者其他http://****直接访问了</a></p>
+<p>&#x3D;&#x3D;即：允许前端应用程序从不同的域名或端口发起请求而不受浏览器的限制&#x3D;&#x3D;</p>
+<h2 id="7-代码简单优化"><a href="#7-代码简单优化" class="headerlink" title="7.代码简单优化"></a>7.代码简单优化</h2><p>1.*<em>数据传输时，要什么给什么，而不是SELECT <em>; 保证数据安全性；</em></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Select(&quot;SELECT DISTINCT banRate value, heroName name FROM heroInfos ORDER BY banRate DESC LIMIT 10&quot;)</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>2.跨域请求地址需要设定具体的，不能任何请求都通过</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.allowedOrigins(<span class="hljs-string">&quot;http://86645****&quot;</span>, <span class="hljs-string">&quot;http://172.13.12.12*&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>3.返回JSON数据字段过多问题，实体类必须和数据库字段一样，所以从存入数据库进行控制</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata.pojo;<br><br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Heros</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> id;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> heroId;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">float</span> banRate;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">float</span> showRate;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">float</span> winRate;<br>    <span class="hljs-keyword">private</span> String tRank;<br>    <span class="hljs-keyword">private</span> String heroName;<br>    <span class="hljs-keyword">private</span> String heroCareer;<br>    <span class="hljs-keyword">private</span> String pick;<br>    <span class="hljs-keyword">private</span> String ban;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>存入数据库时进行控制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">insertQuery</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;INSERT INTO heroInfos (heroId, banRate, showRate, winRate, tRank, heroName, heroCareer, pick, ban) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)&quot;</span>;<br><span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">statement</span> <span class="hljs-operator">=</span> connection.prepareStatement(insertQuery)) &#123;<br>    <span class="hljs-keyword">for</span> (Map&lt;String, Object&gt; data : dataList) &#123;<br>        statement.setInt(<span class="hljs-number">1</span>, (<span class="hljs-type">int</span>) data.get(<span class="hljs-string">&quot;heroId&quot;</span>));<br>        statement.setDouble(<span class="hljs-number">2</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;banRate&quot;</span>));<br>        statement.setDouble(<span class="hljs-number">3</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;showRate&quot;</span>));<br>        statement.setDouble(<span class="hljs-number">4</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;winRate&quot;</span>));<br>        statement.setString(<span class="hljs-number">5</span>, (String) data.get(<span class="hljs-string">&quot;tRank&quot;</span>));<br>        <span class="hljs-comment">// 获取嵌套在heroInfo中的字段</span><br>        Map&lt;String, Object&gt; heroInfo = (Map&lt;String, Object&gt;) data.get(<span class="hljs-string">&quot;heroInfo&quot;</span>);<br>        statement.setString(<span class="hljs-number">6</span>, (String) heroInfo.get(<span class="hljs-string">&quot;heroName&quot;</span>));<br>        statement.setString(<span class="hljs-number">7</span>, (String) heroInfo.get(<span class="hljs-string">&quot;heroCareer&quot;</span>));<br>        statement.setString(<span class="hljs-number">8</span>, (String) data.get(<span class="hljs-string">&quot;pick&quot;</span>));<br>        statement.setString(<span class="hljs-number">9</span>, (String) data.get(<span class="hljs-string">&quot;ban&quot;</span>));<br><br>        statement.executeUpdate();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>4.HeroInfo数据表格中数据重复，因为不同id对应不同版本的英雄，所以一个英雄有两条数据，但是搜索到的内容只需要一个 —-&gt; sql语句去重</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> banRate <span class="hljs-keyword">value</span>, heroName name <span class="hljs-keyword">FROM</span> heroInfos <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> banRate <span class="hljs-keyword">DESC</span> LIMIT <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-导入JSON数据进Mysql"><a href="#8-导入JSON数据进Mysql" class="headerlink" title="8.导入JSON数据进Mysql"></a>8.导入JSON数据进Mysql</h2><p>因为是导入json文件，同时需要单独处理里面的一个数组元素，只需要JSON里的部分数，所以直接写一个JSONImporter类来操作数据库</p>
+<p>heroInfo数组中的字段单独处理<code>Map&lt;String, Object&gt; heroInfo = (Map&lt;String, Object&gt;) data.get(&quot;heroInfo&quot;);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><span class="hljs-keyword">import</span> com.fasterxml.jackson.core.type.TypeReference;<br><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;<br><br><span class="hljs-keyword">import</span> java.io.File;<br><span class="hljs-keyword">import</span> java.sql.Connection;<br><span class="hljs-keyword">import</span> java.sql.DriverManager;<br><span class="hljs-keyword">import</span> java.sql.PreparedStatement;<br><span class="hljs-keyword">import</span> java.sql.SQLException;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">JSONImporter</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">fileName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;src/main/java/hokdata/heroInfo.json&quot;</span>;<br><br>        <span class="hljs-comment">// 数据库连接</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;jdbc:mysql://localhost:3306/hok&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;root&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;123456&quot;</span>;<br><br>        <span class="hljs-keyword">try</span> (<span class="hljs-type">Connection</span> <span class="hljs-variable">connection</span> <span class="hljs-operator">=</span> DriverManager.getConnection(url, username, password)) &#123;<br>            <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">objectMapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br><br>            <span class="hljs-comment">// 从 JSON 文件中读取数据</span><br>            List&lt;Map&lt;String, Object&gt;&gt; dataList = objectMapper.readValue(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(fileName), <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeReference</span>&lt;List&lt;Map&lt;String, Object&gt;&gt;&gt;() &#123;&#125;);<br><br>            <span class="hljs-comment">// 插入数据到数据库</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">insertQuery</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;INSERT INTO heroInfos (heroId, banRate, showRate, winRate, tRank, heroName, heroCareer, pick, ban) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)&quot;</span>;<br>            <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">statement</span> <span class="hljs-operator">=</span> connection.prepareStatement(insertQuery)) &#123;<br>                <span class="hljs-keyword">for</span> (Map&lt;String, Object&gt; data : dataList) &#123;<br>                    statement.setInt(<span class="hljs-number">1</span>, (<span class="hljs-type">int</span>) data.get(<span class="hljs-string">&quot;heroId&quot;</span>));<br>                    statement.setDouble(<span class="hljs-number">2</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;banRate&quot;</span>));<br>                    statement.setDouble(<span class="hljs-number">3</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;showRate&quot;</span>));<br>                    statement.setDouble(<span class="hljs-number">4</span>, (<span class="hljs-type">double</span>) data.get(<span class="hljs-string">&quot;winRate&quot;</span>));<br>                    statement.setString(<span class="hljs-number">5</span>, (String) data.get(<span class="hljs-string">&quot;tRank&quot;</span>));<br>                    <span class="hljs-comment">// 获取嵌套在heroInfo中的字段</span><br>                    Map&lt;String, Object&gt; heroInfo = (Map&lt;String, Object&gt;) data.get(<span class="hljs-string">&quot;heroInfo&quot;</span>);<br>                    statement.setString(<span class="hljs-number">6</span>, (String) heroInfo.get(<span class="hljs-string">&quot;heroName&quot;</span>));<br>                    statement.setString(<span class="hljs-number">7</span>, (String) heroInfo.get(<span class="hljs-string">&quot;heroCareer&quot;</span>));<br>                    statement.setString(<span class="hljs-number">8</span>, (String) data.get(<span class="hljs-string">&quot;pick&quot;</span>));<br>                    statement.setString(<span class="hljs-number">9</span>, (String) data.get(<span class="hljs-string">&quot;ban&quot;</span>));<br><br>                    statement.executeUpdate();<br>                &#125;<br>            &#125;<br><br>            System.out.println(<span class="hljs-string">&quot;导入完成.&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="9-测试用例汇总"><a href="#9-测试用例汇总" class="headerlink" title="9.测试用例汇总"></a>9.测试用例汇总</h2><h5 id="HiveTest-java"><a href="#HiveTest-java" class="headerlink" title="HiveTest.java"></a>HiveTest.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><br><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;<br><span class="hljs-keyword">import</span> hokdata.dao.hive.HeroScoreDao;<br><span class="hljs-keyword">import</span> hokdata.pojo.HeroScore;<br><span class="hljs-keyword">import</span> hokdata.pojo.HerosScore;<br><span class="hljs-keyword">import</span> org.junit.jupiter.api.Test;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-comment">//  两个测试</span><br><span class="hljs-comment">// 1.从Hive中查询英雄战力的数据</span><br><span class="hljs-comment">// 2.从Hive中查询的英雄基础数据--测试连接</span><br><br><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HiveTest</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> HeroScoreDao heroScoreDao;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test1</span><span class="hljs-params">()</span>&#123;<br>        List&lt;HerosScore&gt; scoreList2 = heroScoreDao.listHeroScore2();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">strScore2</span> <span class="hljs-operator">=</span> JSON.toJSONString(scoreList2);<br>        System.out.println(<span class="hljs-string">&quot;从Hive中查询英雄战力的数据&quot;</span>+strScore2);<br>    &#125;<br><br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test2</span><span class="hljs-params">()</span>&#123;<br>        List&lt;HeroScore&gt; scoreList1 = heroScoreDao.listHeroScore();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">strScore</span> <span class="hljs-operator">=</span> JSON.toJSONString(scoreList1);<br>        System.out.println(<span class="hljs-string">&quot;从Hive中查询的英雄基础数据--测试连接&quot;</span>+strScore);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="Local-WebTest-java"><a href="#Local-WebTest-java" class="headerlink" title="Local_WebTest.java"></a>Local_WebTest.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;<br><span class="hljs-keyword">import</span> org.springframework.http.HttpHeaders;<br><span class="hljs-keyword">import</span> org.springframework.http.HttpMethod;<br><span class="hljs-keyword">import</span> org.springframework.http.MediaType;<br><span class="hljs-keyword">import</span> org.springframework.http.ResponseEntity;<br><span class="hljs-keyword">import</span> org.springframework.web.client.RestTemplate;<br><br><span class="hljs-keyword">import</span> java.util.Collections;<br><br><span class="hljs-comment">// 发送GET请求,测试能不能从url获得相应数 ---- 这里是localhost测试</span><br><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Local_WebTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 创建RestTemplate对象</span><br>        <span class="hljs-type">RestTemplate</span> <span class="hljs-variable">restTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RestTemplate</span>();<br><br>        <span class="hljs-comment">// 设置请求头，指定接受JSON数据</span><br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));<br><br>        <span class="hljs-comment">// 发送GET请求，获取响应</span><br>        ResponseEntity&lt;String&gt; response = restTemplate.exchange(<br>                <span class="hljs-string">&quot;http://localhost:8080/hok/heros/form4&quot;</span>,<br>                HttpMethod.GET,<br>                <span class="hljs-literal">null</span>,<br>                String.class<br>        );<br><br>        <span class="hljs-comment">// 获取响应的JSON数据</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">responseBody</span> <span class="hljs-operator">=</span> response.getBody();<br><br>        <span class="hljs-comment">// 在控制台输出JSON数据</span><br>        System.out.println(responseBody);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="MySQLTest"><a href="#MySQLTest" class="headerlink" title="MySQLTest"></a>MySQLTest</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><br><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;<br><span class="hljs-keyword">import</span> hokdata.dao.hive.HeroScoreDao;<br><span class="hljs-keyword">import</span> hokdata.dao.mysql.HerosDao;<br><span class="hljs-keyword">import</span> hokdata.pojo.HeroBan;<br><span class="hljs-keyword">import</span> hokdata.pojo.Heros;<br><span class="hljs-keyword">import</span> hokdata.service.HerosService;<br><span class="hljs-keyword">import</span> org.junit.jupiter.api.Test;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-comment">//  四个测试</span><br><span class="hljs-comment">// 1.从MySQL中查询的英雄基础信息</span><br><span class="hljs-comment">// 2.从MySQL中查询的英雄ban率前10条</span><br><span class="hljs-comment">// 3.从MySQL中查询的英雄热度排行前10条</span><br><span class="hljs-comment">// 4.从MySQL中查询的英雄胜率前十</span><br><br><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MySQLTest</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    HerosService herosService;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test1</span><span class="hljs-params">()</span>&#123;<br>        List&lt;Heros&gt; herosList = herosService.getHeros();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">heroStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(herosList);<br>        System.out.println(<span class="hljs-string">&quot;从MySQL中查询的英雄基础信息&quot;</span>+heroStr);<br>    &#125;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test2</span><span class="hljs-params">()</span>&#123;<br>        List&lt;HeroBan&gt; herosList = herosService.getHeros3();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">heroStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(herosList);<br>        System.out.println(<span class="hljs-string">&quot;从MySQL中查询的英雄ban率前10条&quot;</span>+heroStr);  <span class="hljs-comment">///前10条</span><br>    &#125;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test3</span><span class="hljs-params">()</span>&#123;<br>        List&lt;Heros&gt; herosList = herosService.getHeros2();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">heroStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(herosList);<br>        System.out.println(<span class="hljs-string">&quot;从MySQL中查询的英雄热度排行前10条&quot;</span>+heroStr);<br>    &#125;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">test4</span><span class="hljs-params">()</span>&#123;<br>        List&lt;Heros&gt; herosList = herosService.getHeros4();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">heroStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(herosList);<br>        System.out.println(<span class="hljs-string">&quot;从MySQL中查询的英雄胜率前十&quot;</span>+heroStr);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="yumin-WebTest"><a href="#yumin-WebTest" class="headerlink" title="yumin_WebTest"></a>yumin_WebTest</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> hokdata;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;<br><span class="hljs-keyword">import</span> org.springframework.http.HttpHeaders;<br><span class="hljs-keyword">import</span> org.springframework.http.HttpMethod;<br><span class="hljs-keyword">import</span> org.springframework.http.MediaType;<br><span class="hljs-keyword">import</span> org.springframework.http.ResponseEntity;<br><span class="hljs-keyword">import</span> org.springframework.web.client.RestTemplate;<br><br><span class="hljs-keyword">import</span> java.util.Collections;<br><br><span class="hljs-comment">// 发送GET请求,测试能不能从url获得相应数 ---- 这是ip地址测试，可以通过局域网访问</span><br><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">yumin_WebTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 创建RestTemplate对象</span><br>        <span class="hljs-type">RestTemplate</span> <span class="hljs-variable">restTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RestTemplate</span>();<br><br>        <span class="hljs-comment">// 设置请求头，指定接受JSON数据</span><br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));<br><br>        <span class="hljs-comment">// 发送GET请求，获取响应</span><br>        ResponseEntity&lt;String&gt; response = restTemplate.exchange(<br>                <span class="hljs-string">&quot;http://192.168.61.21:8080/hok/heros/form4&quot;</span>,<br>                HttpMethod.GET,<br>                <span class="hljs-literal">null</span>,<br>                String.class<br>        );<br><br>        <span class="hljs-comment">// 获取响应的JSON数据</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">responseBody</span> <span class="hljs-operator">=</span> response.getBody();<br><br>        <span class="hljs-comment">// 在控制台输出JSON数据</span><br>        System.out.println(responseBody);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611105826066.png" srcset="/img/loading.gif" lazyload class=""> 
+
+ <img src="/2024/03/04/HOK%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/image-20230611111632803.png" srcset="/img/loading.gif" lazyload class=""> 
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HOK后端项目记录</div>
+      <div>http://example.com/2024/03/04/HOK后端项目记录/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>zhanghao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/26/%E8%A7%86%E9%A2%91%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E4%BD%BF%E7%94%A8/" title="视频的存储与使用">
+                        <span class="hidden-mobile">视频的存储与使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"vUJb9teRgUA24dRL0NgX4rPx-gzGzoHsz","appKey":"V2r5I2Th3xEnM5TBRcIomfhi","path":"window.location.pathname","placeholder":null,"avatar":"hide","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://vujb9ter.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
